@@ -1,13 +1,22 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import Login from './components/Login';
+import { useState } from 'react'
+import { Route, Routes} from 'react-router-dom'
+import { Navigation, About, Account, Cart, Home, Products } from './components/index.js'
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
-    
-  );
+    <>
+      <Navigation />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Home" element={<Home />} />
+        <Route path="/Products" element={<Products />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Account" element={<Account />} />
+        <Route path="/Cart" element={<Cart />} />
+      </Routes>
+    </>
+  )
 }
 
-export default App;
+export default App
