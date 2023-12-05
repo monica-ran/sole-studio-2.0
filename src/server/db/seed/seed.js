@@ -26,7 +26,8 @@ const createTables = async () => {
           first_name VARCHAR(255) NOT NULL,
           last_name VARCHAR(255) NOT NULL,
           email VARCHAR(255) UNIQUE NOT NULL,
-          password VARCHAR(255) NOT NULL
+          password VARCHAR(255) NOT NULL,
+          admin BOOLEAN
       );
 
         CREATE TABLE products (
@@ -59,7 +60,7 @@ const createTables = async () => {
 const insertUsers = async () => {
     try {
         for (const user of users) {
-            await createUser({ first_name: user.first_name, last_name: user.last_name, email: user.email, password: user.password });
+            await createUser({ first_name: user.first_name, last_name: user.last_name, email: user.email, password: user.password, admin: user.admin});
         }
         console.log("User seed data inserted successfully.");
     } catch (error) {

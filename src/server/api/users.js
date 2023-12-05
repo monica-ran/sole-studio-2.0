@@ -5,7 +5,7 @@ const { createUser, getUser, getUserByEmail, getAllUsers } = require("../db");
 
 const jwt = require("jsonwebtoken");
 
-usersRouter.get("/", async (req, res, next) => {
+usersRouter.get("/", requireAdmin, async (req, res, next) => {
     try {
         const users = await getAllUsers();
 
@@ -17,7 +17,7 @@ usersRouter.get("/", async (req, res, next) => {
     }
 });
 
-usersRouter.post("/login", async (req, res, next) => {
+usersRouter.post("/login" async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
         next({

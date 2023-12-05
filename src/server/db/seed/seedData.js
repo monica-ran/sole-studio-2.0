@@ -4,18 +4,21 @@ const users = [
         last_name: "Jonhson",
         email: "emily@example.com",
         password: "securepass",
+        admin: "true"
     },
     {
         first_name: "Lui",
         last_name: "Wei",
         email: "liu@example.com",
         password: "strongpass",
+        admin: "false"
     },
     {
         first_name: "Isabella",
         last_name: "Garcia",
         email: "bella@example.com",
         password: "pass1234",
+        admin: "false"
     },
 
     // Add more user objects as needed
