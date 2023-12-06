@@ -17,7 +17,7 @@ usersRouter.get("/", requireAdmin, async (req, res, next) => {
     }
 });
 
-usersRouter.post("/login" async (req, res, next) => {
+usersRouter.post("/login", async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
         next({
