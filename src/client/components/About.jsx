@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/solestudio - Copy.svg';
 
-// Define the About component
 const About = () => {
     return (
         <section style={{ background: '#FFFFFF', color: '#0000FF' }} className="mt-20 pt-16">
@@ -89,5 +88,4 @@ const About = () => {
     );
 };
 
-// Export the About component
 export default About;
