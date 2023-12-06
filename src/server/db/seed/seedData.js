@@ -40,9 +40,21 @@ const products = [
         price: "199.99",
         image_url: "https://www.andysowards.com/blog/assets/cg-video-cool-shoes-animation.jpeg",
     },
+
+    
 ];
+
+const orders = [
+    { 
+        user_id: "2",
+        order_Date: "12/5/2023",
+        order_status: "",
+        total: ""
+    }
+]
 
 module.exports = {
     users,
     products,
+    orders,
 };
