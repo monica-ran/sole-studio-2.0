@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Logo from '../assets/solestudio - Copy.svg'
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -49,7 +51,7 @@ const Login = () => {
         className="hidden lg:block lg:w-1/2 bg-cover"
         style={{
           backgroundImage:
-            "url('https://images.unsplash.com/photo-1546514714-df0ccc50d7bf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=667&q=80')",
+            "url('https://storyset.com/mobile')",
         }}
       ></div>
       <div className="w-full p-8 lg:w-1/2">
