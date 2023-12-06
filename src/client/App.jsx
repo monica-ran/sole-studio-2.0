@@ -1,10 +1,8 @@
-import { useState } from 'react'
-import { Route, Routes} from 'react-router-dom'
-import { Navigation, About, Account, Cart, Home, Products, Login } from './components/index.js'
-
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { Navigation, About, Account, Cart, Home, Products, Signup, Login} from './components/index.js';
 
 function App() {
-
   return (
     <>
       <Navigation />
@@ -14,11 +12,11 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/account" element={<Account />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
