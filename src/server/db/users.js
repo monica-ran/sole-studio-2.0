@@ -78,21 +78,26 @@ const getAllUsers = async () => {
 async function getUserById(userId) {
     // first get the user
     try {
-      const {rows: [user]} = await client.query(`
+        const {
+            rows: [user],
+        } = await db.query(
+            `
         SELECT *
         FROM users
         WHERE id = $1;
-      `, [userId]);
-      // if it doesn't exist, return null
-      if (!user) return null;
-      // if it does:
-      // delete the 'password' key from the returned object and return a user.
-      delete user.password; 
-      return user;  
+      `,
+            [userId]
+        );
+        // if it doesn't exist, return null
+        if (!user) return null;
+        // if it does:
+        // delete the 'password' key from the returned object and return a user.
+        delete user.password;
+        return user;
     } catch (error) {
-      throw error;
+        throw error;
     }
-  }
+}
 
 const getUserByEmail = async (email) => {
     try {
