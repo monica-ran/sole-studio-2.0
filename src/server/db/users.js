@@ -51,30 +51,6 @@ const getAllUsers = async () => {
     }
 };
 
-// async function getUserById(id) {
-//     // first get the user
-//     try {
-//         const {
-//             rows: [user],
-//         } = await db.query(
-//             `
-//         SELECT *
-//         FROM users
-//         WHERE id = $1;
-//       `,
-//             [id]
-//         );
-//         // if it doesn't exist, return null
-//         if (!user) return null;
-//         // if it does:
-//         // delete the 'password' key from the returned object
-//         // delete user.password;
-//         return user;
-//     } catch (error) {
-//         throw error;
-//     }
-// }
-
 async function getUserById(userId) {
     // first get the user
     try {

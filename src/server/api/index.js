@@ -41,8 +41,12 @@ const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
 const productsRouter = require("./products");
-const { getUserById } = require("../db");
 apiRouter.use("/products", productsRouter);
+
+const ordersRouter = require("./orders");
+apiRouter.use("/orders", ordersRouter);
+
+const { getUserById } = require("../db");
 
 apiRouter.use((err, req, res, next) => {
     res.status(res.statusCode ? res.statusCode : 500).send(err);
