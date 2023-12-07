@@ -23,7 +23,7 @@ const getAllProducts = async () => {
         const { rows } = await db.query(`
         SELECT * FROM products
         `);
-
+console.log(rows)
         return rows;
     } catch (error) {
         throw error;

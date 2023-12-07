@@ -3,10 +3,13 @@ const productsRouter = express.Router();
 
 const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require("../db");
 
+const { requireAdmin } = require("./utils")
+
 productsRouter.get("/", async (req, res, next) => {
     try {
+        console.log("testing")
         const products = await getAllProducts();
-
+console.log("testing2")
         res.send(products);
     } catch (error) {
         next(error);
@@ -22,7 +25,7 @@ productsRouter.get("/:productId", async (req, res, next) => {
     }
 });
 
-productsRouter.post("/", async (req, res, next) => {
+productsRouter.post("/", requireAdmin, async (req, res, next) => {
     try {
         const product = await createProduct(req.body);
         res.send(product);
@@ -31,7 +34,7 @@ productsRouter.post("/", async (req, res, next) => {
     }
 });
 
-productsRouter.patch("/:productId", async (req, res, next) => {
+productsRouter.patch("/:productId", requireAdmin, async (req, res, next) => {
     try {
         let product = await getProductById(req.params.productId);
         if (!product) throw `No product with ID ${productId} was found.`;
@@ -43,7 +46,7 @@ productsRouter.patch("/:productId", async (req, res, next) => {
     }
 });
 
-productsRouter.delete("/:productId", async (req, res, next) => {
+productsRouter.delete("/:productId", requireAdmin, async (req, res, next) => {
     try {
         await deleteProduct(req.params.productId);
         res.send();
