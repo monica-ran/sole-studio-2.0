@@ -35,6 +35,7 @@ const createTables = async () => {
           name VARCHAR(255) NOT NULL,
           description TEXT,
           price DECIMAL NOT NULL,
+          size INTEGER,
           image_url TEXT
       );
 
