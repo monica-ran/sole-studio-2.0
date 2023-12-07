@@ -1,5 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
+const { requireAdmin } = require("./utils");
 
 const { createUser, getUser, getUserByEmail, getAllUsers } = require("../db");
 
