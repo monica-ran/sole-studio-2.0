@@ -1,15 +1,15 @@
 const db = require("./client");
 
-const createOrder = async ({ user_name, order_Date, order_status }) => {
+const createOrder = async ({ user_id, order_Date, order_status }) => {
     try {
         const {
             rows: [order],
         } = await db.query(
             `
-        INSERT INTO orders(user_name, order_Date, order_status)
+        INSERT INTO orders(user_id, order_Date, order_status)
         VALUE($1, $2, $3)
         RETURNING *
-        `[(user_name, order_Date, order_status)]
+        `[(user_id, order_Date, order_status)]
         );
         return order;
     } catch (err) {
