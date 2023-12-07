@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/solestudio - Copy.svg';
-import loginImage from './login.png';
+import loginImage from './photos/login.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');

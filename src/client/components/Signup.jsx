@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/solestudio - Copy.svg';
-import signUpImage from './signup.png';
+import signUpImage from './photos/signup.png';
 
 const Signup = () => {
   return (

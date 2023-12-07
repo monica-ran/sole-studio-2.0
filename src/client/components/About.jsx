@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/solestudio - Copy.svg';
-import aboutImage from './about.png';
+import aboutImage from './photos/about.png';
 
 const About = () => {
   return (
-    <section style={{ background: '#FFFFFF', color: '#0000FF' }} className="mt-16 pt-16">
+    <section style={{ background: '#FFFFFF', color: 'black' }} className="mt-16 pt-16">
       <div className="container px-6 mx-auto flex flex-col lg:flex-row items-center justify-between">
         <div className="text-center lg:text-left mb-4 lg:mb-0">
           <h1 className="text-3xl font-semibold capitalize lg:text-4xl">

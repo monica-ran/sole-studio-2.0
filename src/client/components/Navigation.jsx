@@ -15,6 +15,9 @@ const Navigation = () => {
             <li className='px-10'>
               <a href="/products">Products</a>
             </li>
+            <li className='px-10'>
+              <a href="/about">About</a>
+            </li>
           </ul>
         </div>
         <div className='flex-1 flex justify-center'>
@@ -25,10 +28,10 @@ const Navigation = () => {
         <div className='flex-1 flex text-lg text-white font-light justify-center'>
           <ul className='flex '>
             <li className='px-10'>
-              <a href="/about">About</a>
+              <a href="/login">Login</a>
             </li>
             <li className='px-10'>
-              <a href="/login">Login</a>
+              <a href="/cart">Cart</a>
             </li>
           </ul>
         </div>
