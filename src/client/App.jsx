@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Route, Routes} from 'react-router-dom'
-import { Navigation, About, Account, Cart, Home, Products } from './components/index.js'
+import { Navigation, About, Account, Cart, Home, Products, Footer} from './components/index.js'
 
 function App() {
 
@@ -14,6 +14,7 @@ function App() {
         <Route path="/Account" element={<Account />} />
         <Route path="/Cart" element={<Cart />} />
       </Routes>
+      <Footer />
     </>
   )
 }
