@@ -6,15 +6,19 @@ const { requireUser } = require("./utils")
 const { createOrder, findActiveOrder, updateOrder, addProductToActiveOrder, removeProductFromActiveOrder} = require("../db")
  
 
-ordersRouter.post("/:orderId/products/:productsId", addProductToOrder)
+ordersRouter.get("/cart", requireUser, async (req, res, next) => {
+    try {
+       const cart = await findActiveOrder();
+       if (cart) {
+        res.send(cart)
+       } else {
+        createOrder()
+       }
 
-const addProductToActiveOrder = (req, res, next) => {
-
-}
-
-
-
-
+    }catch (err) {
+        next (err)
+    }
+})
 
 
 
