@@ -41,16 +41,16 @@ const createTables = async () => {
         CREATE TABLE orders (
           id SERIAL PRIMARY KEY,
           user_id INTEGER REFERENCES users(id),
-          order_Date TIMESTAMP,
+          order_date TIMESTAMP,
           active_order BOOLEAN,
-          total DECIMAL NOT NULL
+          total DECIMAL 
       );
 
         CREATE TABLE order_product (
-          id SERIAL PRIMARY KEY
-          "order_id" INTEGER REFERENCES orders(id),
-          "product_id" INTEGER REFERENCES products(id),
-          quantity INTEGER NOT NULL
+          id SERIAL PRIMARY KEY,
+          "order_id" INTEGER REFERENCES orders(id) NOT NULL,
+          "product_id" INTEGER REFERENCES products(id) NOT NULL
+          
       );
       `);
     } catch (err) {

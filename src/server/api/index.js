@@ -37,19 +37,20 @@ apiRouter.use(async (req, res, next) => {
     }
 });
 
+
+
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
 const productsRouter = require("./products");
+const { getUserById } = require("../db");
 apiRouter.use("/products", productsRouter);
 
 const ordersRouter = require("./orders");
 apiRouter.use("/orders", ordersRouter);
 
-const { getUserById } = require("../db");
-
 apiRouter.use((err, req, res, next) => {
-    res.status(res.statusCode ? res.statusCode : 500).send(err);
+    res.status(res.statusCode ? res.statusCode : 500).json(err);
 });
 
 module.exports = apiRouter;
