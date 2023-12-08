@@ -23,4 +23,13 @@ ordersRouter.post("/cart/product/:product_id", requireUser, async (req, res, nex
     }
 });
 
+ordersRouter.delete("/cart/product/:product_id", requireUser, async (req, res, next) => {
+    try {
+        await removeProductFromActiveOrder(req.params.productId);
+        res.send();
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = ordersRouter;
