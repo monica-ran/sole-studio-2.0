@@ -2,7 +2,14 @@ const express = require("express");
 const ordersRouter = express.Router();
 
 const { requireUser } = require("./utils");
-const { createOrder, findActiveOrder, updateOrder, addProductToActiveOrder, removeProductFromActiveOrder } = require("../db");
+const {
+    createOrder,
+    findActiveOrder,
+    updateOrder,
+    addProductToActiveOrder,
+    removeProductFromActiveOrder,
+    getProductById,
+} = require("../db");
 
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
     try {
@@ -25,11 +32,27 @@ ordersRouter.post("/cart/product/:product_id", requireUser, async (req, res, nex
 
 ordersRouter.delete("/cart/product/:product_id", requireUser, async (req, res, next) => {
     try {
-        await removeProductFromActiveOrder(req.params.productId);
-        res.send();
-    } catch (error) {
-        next(error);
+        const user_id = req.user.id;
+        const { product_id } = req.params;
+       
+        const productToBeUpdated = await getProductById(product_id);
+        console.log("test")
+        if (!productToBeUpdated) {
+            next({
+                name: "NotFound",
+                message: `No product by ID ${product_id}`,
+            });
+        } else {
+            console.log("test2")
+            const deletedProduct = await removeProductFromActiveOrder({user_id, product_id});
+            console.log(deletedProduct)
+            res.send({ ...deletedProduct });
+        }
+    } catch (err) {
+        next(err);
     }
 });
+
+
 
 module.exports = ordersRouter;

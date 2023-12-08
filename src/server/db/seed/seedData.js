@@ -418,7 +418,7 @@ const products = [
         description: "Quisque ut erat.",
         price: "271.35",
         size: "",
-        image_url: "blank_url",
+        image_url: "https://media.istockphoto.com/id/1143344509/photo/blue-women-shoes-with-little-holes.jpg?s=612x612&w=0&k=20&c=IAfeAew6C9cLCpkx_oQ3WRocFAHGDJ-b3fZnCcmV22o=",
     },
     {
         name: "Celestial Cipher",

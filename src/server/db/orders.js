@@ -102,7 +102,7 @@ const addProductToActiveOrder = async ({ user_id, product_id }) => {
             [activeOrder.id, product_id]
         );
 
-        activeOrder = await findActiveOrder(user_id)
+        activeOrder = await findActiveOrder(user_id);
 
         return activeOrder;
     } catch (err) {
@@ -113,20 +113,22 @@ const addProductToActiveOrder = async ({ user_id, product_id }) => {
 const removeProductFromActiveOrder = async ({ user_id, product_id }) => {
     try {
         const activeOrder = await findActiveOrder(user_id);
+        console.log(activeOrder.id, product_id);
         const {
             rows: [orderProduct],
         } = await db.query(
             `
-            DELETE FROM order_product(order_id, product_id)
+            DELETE FROM order_product
             WHERE order_id = $1 
             AND product_id = $2
-            RETURING *
+            RETURNING *
         `,
-            [activeOrder.order_id, product_id]
+            [activeOrder.id, product_id]
         );
+        console.log(orderProduct);
         return orderProduct;
     } catch (err) {
-        throw err;
+        next(err);
     }
 };
 module.exports = {
