@@ -3,13 +3,12 @@ const productsRouter = express.Router();
 
 const { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } = require("../db");
 
-const { requireAdmin } = require("./utils")
+const { requireAdmin } = require("./utils");
 
 productsRouter.get("/", async (req, res, next) => {
     try {
-        console.log("testing")
         const products = await getAllProducts();
-console.log("testing2")
+
         res.send(products);
     } catch (error) {
         next(error);

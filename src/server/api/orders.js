@@ -1,52 +1,35 @@
+const express = require("express");
+const ordersRouter = express.Router();
 
-//app.js
+const { requireUser } = require("./utils");
+const { createOrder, findActiveOrder, updateOrder, addProductToActiveOrder, removeProductFromActiveOrder } = require("../db");
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const orders = require('./orders');
+ordersRouter.get("/cart", requireUser, async (req, res, next) => {
+    try {
+        let cart = await findActiveOrder(req.user.id);
 
-const app = express();
-
-app.use(bodyParser.json());
-
-app.get('/orders', (req, res) => {
-    res.json(orders.getAllOrders());
-});
-
-app.get('/orders/:id', (req, res) => {
-    const order = orders.getSingleOrder(req.params.id);
-    if (!order) {
-        return res.status(404).json({ error: 'Order not found' });
+        res.send(cart);
+    } catch (err) {
+        next(err);
     }
-
-    res.json(order);
 });
 
-app.post('/orders', (req, res) => {
-    const order = orders.postOrder(req.body);
-    res.status(201).json(order);
-});
-
-app.patch('/orders/:id', (req, res) => {
-    const order = orders.patchOrder(req.params.id, req.body);
-    if (!order) {
-        return res.status(404).json({ error: 'Order not found' });
+ordersRouter.post("/cart/product/:product_id", requireUser, async (req, res, next) => {
+    try {
+        const updatedCart = await addProductToActiveOrder({ product_id: req.params.product_id, user_id: req.user.id });
+        res.send(updatedCart);
+    } catch (err) {
+        next(err);
     }
-
-    res.json(order);
 });
 
-app.delete('/orders/:id', (req, res) => {
-    const order = orders.getOrder(req.params.id);
-    if (!order) {
-        return res.status(404).json({ error: 'Order not found' });
+ordersRouter.delete("/cart/product/:product_id", requireUser, async (req, res, next) => {
+    try {
+        await removeProductFromActiveOrder(req.params.productId);
+        res.send();
+    } catch (error) {
+        next(error);
     }
-
-    const index = orders.indexOf(order);
-    orders.splice(index, 1);
-
-    res.status(204).end();
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+module.exports = ordersRouter;

@@ -15,10 +15,6 @@ db.connect();
 const apiRouter = require("./api");
 app.use("/api", apiRouter);
 
-app.use((err, req, res, next) => {
-    console.log(err);
-    res.send(err);
-});
 
 router.listen(app, 3000, () => console.log("Server is listening on port 3000..."));
 
