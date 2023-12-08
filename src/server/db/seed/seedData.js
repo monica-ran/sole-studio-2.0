@@ -429,18 +429,9 @@ const products = [
     },
 ];
 
-const orders = [
-    {
-    user_id: "1",
-    order_Date: "10-12-2023",
-    active_order: "true",
-    total: "100",
-    }
-];
+
 
 module.exports = {
     users,
     products,
-    orders,
-    
 };
