@@ -9,6 +9,4 @@ import Login from './Login';
 import Signup from './Signup';
 import Footer from "./Footer";
 
-export { Navigation, Home, Products, Account, About, Cart, Login, Signup, Footer};
-
-export { Navigation, Home, Products, Account, About, Cart, ProductDetails };
+export { Navigation, Home, Products, Account, About, Cart, Login, Signup, Footer, ProductDetails};
