@@ -1,94 +1,10 @@
-// import React, { useState, useEffect } from 'react';
-
-// const Products = () => {
-//   const [products, setProducts] = useState([]);
-
-//   useEffect(() => {
-//     // Fetch products from the API
-//     fetch('http://localhost:3000/api/products')
-//       .then(response => response.json())
-//       .then(data => setProducts(data))
-//       .catch(error => console.error('Error fetching products:', error));
-//   }, []);
-
-//   return (
-//     <div className="flex flex-row min-h-screen justify-start bg-gray-100 p-24">
-//       <div className="pb-9 text-center border-b border-black border-opacity 6">
-//       <h1 className="mb-5 md:mb-0 text-9xl xl:text-10xl leading-normal font-heading font-medium text-center">test</h1>
-//       </div>
-//       <div className="grid grid-cols-4 gap-4 mx-auto px-5 w-auto">
-//         {products.map(product => (
-//           <div key={product.id} className="max-w-xs cursor-pointer rounded-lg bg-white p-2 shadow duration-150 hover:scale-105 hover:shadow-md">
-//             <img className="w-full rounded-lg object-cover object-center" src={product.image_url} alt={product.name} />
-//             <p className="my-4 pl-4 font-bold text-gray-500">{product.name}</p>
-//             <p className="mb-4 ml-4 text-xl font-semibold text-gray-800">${product.price}</p>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Products;
-
-// import React, { useState, useEffect } from 'react';
-
-// const ProductList = () => {
-//   const [products, setProducts] = useState([]);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch('http://localhost:3000/api/products');
-//         const data = await response.json();
-//         setProducts(data);
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   return (
-//     <>
-//       {/* Your Tailwind CSS for the header */}
-//       {/* ... */}
-
-//       {/* Title */}
-//       <div className="pt-32 bg-white">
-//         <h1 className="text-center text-2xl font-bold text-gray-800">All Products</h1>
-//       </div>
-
-//       {/* Tab Menu */}
-//       {/* ... */}
-
-//       {/* Product List */}
-//       <section className="py-10 bg-gray-100">
-//         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-//           {products.map((product) => (
-//             <article
-//               key={product.id} // Ensure each product has a unique identifier
-//               className="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300"
-//             >
-//               <a href="#">
-//                 {product.name}
-//               </a>
-//             </article>
-//           ))}
-//         </div>
-//       </section>
-//     </>
-//   );
-// };
-
-// export default ProductList;
-
 import React, { useState, useEffect } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [ search, setSearch ] = useState('')
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -104,56 +20,73 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  const handleLinkClick = (productId) => {
-    // Navigate to the product details page when the link is clicked
-    window.location.href = `/products/${productId}`;
-  };
+  // const handleLinkClick = (productId) => {
+  //   // Navigate to the product details page when the link is clicked
+  //   window.location.href = `/products/${productId}`;
+  // };
 
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div>
+    <div className="bg-white">
+      <main className="pt-28">
+      <div class="relative mt-6 max-w-lg mx-auto">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                <svg class="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
 
-      {/* Title */}
-      <div className="pt-28 border-b border-opacity-5 border-black pb-9 bg-white">
-        <h1 className="text-center text-2xl font-heading text-gray-800">All Products</h1>
-      </div>
+                <input class="w-full border rounded-md pl-10 pr-4 py-2 focus:border-blue-500 focus:outline-none focus:shadow-outline" type="text" placeholder="Search" onChange={(e) => setSearch(e.target.value)}></input>
 
-
-      {/* Product List */}
-      <section className="py-10 bg-gray-100">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <article
-              key={product.id}
-              className="rounded-xl bg-white p-3 shadow-lg hover:shadow-xl hover:transform hover:scale-105 duration-300"
-            >
-              <Link to={`/products/${product.id}`} onClick={() => navigate(`/products/${product.id}`)}>
-                <div className="relative flex items-end overflow-hidden rounded-xl">
-                  <img src={product.image_url} alt={product.name} />
-
-                  {/* ... Rest of product card content */}
+            </div>
+        <div className="container mx-auto px-6 pt-4">
+          <h3 className="text-gray-700 text-2xl font-medium">Unisex Shoes</h3>
+          <span className="mt-3 text-sm text-gray-500">50+ Products</span>
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="w-full max-w-sm mx-auto border shadow-md overflow-hidden hover:border-blue-500"
+              >
+                <Link to={`/products/${product.id}`} onClick={() => navigate(`/products/${product.id}`)}>
+                <div
+                  className="flex items-end justify-end h-56 w-full bg-cover"
+                  style={{ backgroundImage: `url('${product.image_url}')` }}
+                >
+                  
+                  <button className="p-2 rounded-full bg-blue-400 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                  </button>
                 </div>
-
-                <div className="mt-1 p-2">
-                  <h2 className="text-slate-700">{product.name}</h2>
-                  <p className="mt-1 text-sm text-slate-400">{product.description}</p>
-
-                  <div className="mt-3 flex items-end justify-between">
-                    <p className="text-lg font-bold text-black-500">${product.price}</p>
-
-                    {/* ... Rest of your product card content */}
-                  </div>
+                <div className="px-5 py-3">
+                  <h3 className="text-gray-700 uppercase">{product.name}</h3>
+                  <span className="text-gray-500 mt-2">${product.price}</span>
                 </div>
-              </Link>
-            </article>
-          ))}
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
-      </section>
+      </main>
     </div>
   );
 };
 
 export default Products;
+
 
 
 
