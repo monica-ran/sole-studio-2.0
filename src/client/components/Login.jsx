@@ -33,6 +33,12 @@ const Login = () => {
       if (!response.ok) {
         throw result;
       }
+
+      // save the token to local storage
+      if (result.token) {
+        localStorage.setItem('token', result.token);
+
+      }  
       setEmail('');
       setPassword('');
     } catch (err) {
