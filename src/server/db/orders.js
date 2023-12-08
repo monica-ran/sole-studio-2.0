@@ -7,9 +7,10 @@ const createOrder = async ({ user_id, order_Date, order_status }) => {
         } = await db.query(
             `
         INSERT INTO orders(user_id, order_Date, order_status)
-        VALUE($1, $2, $3)
+        VALUES($1, $2, $3)
         RETURNING *
-        `[(user_id, order_Date, order_status)]
+        `,
+            [user_id, order_Date, order_status]
         );
         return order;
     } catch (err) {
@@ -61,9 +62,15 @@ const addProductToActiveOrder = async ({user_id, product_id}) => {
             rows: [orderProduct],
         } = await db.query(
             `
-            INSERT INTO order_product(order_id, product_id)
-            VALUE($1, $2)
+            // INSERT INTO order_product(order_id, product_id)
+            // VALUES($1, $2)
+            // RETURNING *
+
+            DELETE FROM order_product
+            WHERE order_id = $1 
+            AND product_id = $2
             RETURNING *
+
         `,
             [activeOrder.order_id, product_id]
         );
@@ -83,7 +90,7 @@ const removeProductFromActiveOrder = async ({user_id, product_id}) => {
             DELETE FROM order_product(order_id, product_id)
             WHERE order_id = $1 
             AND product_id = $2
-            RETURING *
+            RETURNING *
         `,
             [activeOrder.order_id, product_id]
         );
@@ -100,3 +107,8 @@ module.exports = {
     addProductToActiveOrder,
     removeProductFromActiveOrder,
 };
+
+
+// // INSERT INTO order_product(order_id, product_id)
+            // VALUE($1, $2)
+            // RETURNING * this was changed in removeProductFromActiveOrder
