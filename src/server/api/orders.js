@@ -11,7 +11,6 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
         if (cart) {
             res.send(cart);
         } else {
-            // Assuming createOrder is an asynchronous function, await its completion
             const newCart = await createOrder();
             
             // Send the newly created cart in the response
