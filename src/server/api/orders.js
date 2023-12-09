@@ -3,7 +3,6 @@ const ordersRouter = express.Router();
 
 const { requireUser } = require("./utils");
 const {
-    createOrder,
     findActiveOrder,
     checkoutOrder,
     addProductToActiveOrder,
@@ -21,6 +20,7 @@ ordersRouter.get("/cart", requireUser, async (req, res, next) => {
     }
 });
 
+// add product to the cart or add quantity to product
 ordersRouter.post("/cart/product/:product_id", requireUser, async (req, res, next) => {
     try {
         const updatedCart = await addProductToActiveOrder({ product_id: req.params.product_id, user_id: req.user.id });
@@ -30,7 +30,7 @@ ordersRouter.post("/cart/product/:product_id", requireUser, async (req, res, nex
     }
 });
 
-// to remove one shoe with the quantity button
+// remove one product with the quantity button
 ordersRouter.delete("/cart/product/:product_id", requireUser, async (req, res, next) => {
     try {
         const user_id = req.user.id;
@@ -54,7 +54,7 @@ ordersRouter.delete("/cart/product/:product_id", requireUser, async (req, res, n
     }
 });
 
-// to remove the shoe completely from the cart with delete button or X
+// remove the product completely from the cart with delete button or X
 ordersRouter.delete("/cart/product/:product_id/removeAll", requireUser, async (req, res, next) => {
     try {
         const user_id = req.user.id;
@@ -78,6 +78,7 @@ ordersRouter.delete("/cart/product/:product_id/removeAll", requireUser, async (r
     }
 });
 
+// to checkout an active order
 ordersRouter.patch("/cart", requireUser, async(req, res, next) => {
     try {
        
