@@ -53,6 +53,29 @@ ordersRouter.delete("/cart/product/:product_id", requireUser, async (req, res, n
     }
 });
 
-ordersRouter.patch
+ordersRouter.patch("/checkout", requireUser, async (req, res, next) => {
+    try {
+        const user_id = req.user.id;
+        const activeOrder = await findActiveOrder(user_id);
+
+        if (!activeOrder) {
+            return res.status(404).send({ error: 'No active order found for the user.' });
+        }
+        const updatedOrder = await updateOrder({
+            order_id: activeOrder.order_id,
+            active_order: false, // Assuming marking the order as inactive
+            total: calculateTotal(activeOrder), // Replace with your own logic for calculating the total
+        });
+        res.send({ message: 'Checkout successful', updatedOrder });
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Helper function to calculate the total (replace with your own logic)
+const calculateTotal = (order) => {
+    // Placeholder logic - summing up the product prices for simplicity
+    return order.products.reduce((total, product) => total + product.price, 0);
+};
 
 module.exports = ordersRouter;
