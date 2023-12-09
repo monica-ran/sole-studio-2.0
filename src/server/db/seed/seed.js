@@ -1,8 +1,7 @@
 const db = require("../client");
 const { createUser } = require("../users");
 const { createProduct } = require("../products");
-const { users, products } = require("./seedData")
-
+const { users, products } = require("./seedData");
 
 const dropTables = async () => {
     try {
@@ -42,15 +41,16 @@ const createTables = async () => {
         CREATE TABLE orders (
           id SERIAL PRIMARY KEY,
           user_id INTEGER REFERENCES users(id),
-          order_Date TIMESTAMP,
-          order_status VARCHAR(255) NOT NULL,
-          total DECIMAL NOT NULL
+          order_date TIMESTAMP,
+          active_order BOOLEAN,
+          total DECIMAL 
       );
 
         CREATE TABLE order_product (
-          "order_id" INTEGER REFERENCES orders(id),
-          "product_id" INTEGER REFERENCES products(id),
-          quantity INTEGER NOT NULL
+          id SERIAL PRIMARY KEY,
+          "order_id" INTEGER REFERENCES orders(id) NOT NULL,
+          "product_id" INTEGER REFERENCES products(id) NOT NULL
+          
       );
       `);
     } catch (err) {
@@ -61,7 +61,13 @@ const createTables = async () => {
 const insertUsers = async () => {
     try {
         for (const user of users) {
-            await createUser({ first_name: user.first_name, last_name: user.last_name, email: user.email, password: user.password, admin: user.admin});
+            await createUser({
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                password: user.password,
+                admin: user.admin,
+            });
         }
         console.log("User seed data inserted successfully.");
     } catch (error) {
@@ -81,7 +87,7 @@ const insertProducts = async () => {
         }
         console.log("Product seed data inserted successfully");
     } catch (error) {
-        console.error("Erro inserting product seed data:", error);
+        console.error("Error inserting product seed data:", error);
     }
 };
 

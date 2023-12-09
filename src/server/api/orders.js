@@ -1,65 +1,58 @@
-const express = require('express');
+const express = require("express");
 const ordersRouter = express.Router();
 
 const { requireUser } = require("./utils");
-const { createOrder, findActiveOrder, updateOrder, addProductToActiveOrder, removeProductFromActiveOrder } = require("../db");
+const {
+    createOrder,
+    findActiveOrder,
+    updateOrder,
+    addProductToActiveOrder,
+    removeProductFromActiveOrder,
+    getProductById,
+} = require("../db");
 
-// Get Cart
 ordersRouter.get("/cart", requireUser, async (req, res, next) => {
     try {
-        const cart = await findActiveOrder();
-        if (cart) {
-            res.send(cart);
+        let cart = await findActiveOrder(req.user.id);
+
+        res.send(cart);
+    } catch (err) {
+        next(err);
+    }
+});
+
+ordersRouter.post("/cart/product/:product_id", requireUser, async (req, res, next) => {
+    try {
+        const updatedCart = await addProductToActiveOrder({ product_id: req.params.product_id, user_id: req.user.id });
+        res.send(updatedCart);
+    } catch (err) {
+        next(err);
+    }
+});
+
+ordersRouter.delete("/cart/product/:product_id", requireUser, async (req, res, next) => {
+    try {
+        const user_id = req.user.id;
+        const { product_id } = req.params;
+       
+        const productToBeUpdated = await getProductById(product_id);
+        console.log("test")
+        if (!productToBeUpdated) {
+            next({
+                name: "NotFound",
+                message: `No product by ID ${product_id}`,
+            });
         } else {
-            const newCart = await createOrder();
-            
-            // Send the newly created cart in the response
-            res.send(newCart);
+            console.log("test2")
+            const deletedProduct = await removeProductFromActiveOrder({user_id, product_id});
+            console.log(deletedProduct)
+            res.send({ ...deletedProduct });
         }
-
     } catch (err) {
         next(err);
     }
 });
 
-// Create Order (POST)
-ordersRouter.post("/cart", requireUser, async (req, res, next) => {
-    try {
-        const newCart = await createOrder(req.body);
-        res.status(201).send(newCart);
-    } catch (err) {
-        next(err);
-    }
-});
-
-// Update Order (PATCH)
-ordersRouter.patch("/cart", requireUser, async (req, res, next) => {
-    try {
-        const updatedOrder = await updateOrder(req.body);
-        res.send(updatedOrder);
-    } catch (err) {
-        next(err);
-    }
-});
-
-// Add Product to Active Order (POST)
-ordersRouter.post("/cart/products", requireUser, async (req, res, next) => {
-    try {
-        const orderProduct = await addProductToActiveOrder(req.body);
-        res.status(201).send(orderProduct);
-    } catch (err) {
-        next(err);
-    }
-});
-
-// Remove Product from Active Order (DELETE)
-ordersRouter.delete("/cart/products", requireUser, async (req, res, next) => {
-    try {
-        const orderProduct = await removeProductFromActiveOrder(req.body);
-        res.send(orderProduct);
-    } catch (err) {
-        next(err);
-    }
-});
+ordersRouter.patch
 
 module.exports = ordersRouter;

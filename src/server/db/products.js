@@ -82,6 +82,7 @@ const deleteProduct = async (productId) => {
     }
 };
 
+
 module.exports = {
     createProduct,
     getAllProducts,

@@ -1,21 +1,24 @@
-import { useState } from 'react'
+import { useState, React} from 'react'
 import { Route, Routes} from 'react-router-dom'
-import { Navigation, About, Account, Cart, Home, Products } from './components/index.js'
+import { Navigation, About, Account, Cart, Home, Products, Login, Signup, Footer, ProductDetails } from './components/index.js'
 
 function App() {
-
   return (
     <>
       <Navigation />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Products" element={<Products />} />
-        <Route path="/About" element={<About />} />
-        <Route path="/Account" element={<Account />} />
-        <Route path="/Cart" element={<Cart />} />
+        <Route path="/products/:productId" element={<ProductDetails/>} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

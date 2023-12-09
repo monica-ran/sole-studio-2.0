@@ -1,18 +1,20 @@
 const db = require("./client");
 
-const createOrder = async ({ user_id, order_Date, order_status }) => {
+const createOrder = async ({ user_id, order_date }) => {
     try {
+        if (!order_date) order_date = new Date().toISOString();
+        let active_order = true;
         const {
             rows: [order],
         } = await db.query(
             `
-        INSERT INTO orders(user_id, order_Date, order_status)
-        VALUES($1, $2, $3)
-        RETURNING *
+            INSERT INTO orders(user_id, order_date, active_order)
+            VALUES($1, $2, $3)
+            RETURNING *
         `,
-            [user_id, order_Date, order_status]
+            [user_id, order_date, active_order]
         );
-        return order;
+        return { ...order, products: [] };
     } catch (err) {
         throw err;
     }
@@ -20,23 +22,55 @@ const createOrder = async ({ user_id, order_Date, order_status }) => {
 
 const findActiveOrder = async (user_id) => {
     try {
-        const {
-            rows: [order],
-        } = await db.query(
+        const response = await db.query(
             `
-        SELECT * FROM orders
-        WHERE user_id = $1 
-        AND active_order = true
+            SELECT * FROM orders
+            WHERE user_id = $1 
+            AND active_order = 'true'
         `,
             [user_id]
         );
-        return order;
+        let order = response.rows[0];
+        if (!order) {
+            const orderResponse = await createOrder({ user_id });
+            order = orderResponse.rows[0];
+        }
+
+        const productResponse = await db.query(
+            `
+            SELECT op.product_id, p.name, p.description, p.price, p.size, p.image_url 
+            FROM order_product op
+            JOIN products p on op.product_id = p.id
+            WHERE op.order_id = $1
+        `,
+            [order.id]
+        );
+
+        //add prices to get total
+        let total = 0;
+        productResponse.rows.forEach((product) => (total += Number(product.price)));
+
+        //group products to get quantity
+        let products = {};
+        productResponse.rows.forEach((product) => {
+            let productId = product.product_id;
+            if (!products[productId]) {
+                products[productId] = {
+                    ...product,
+                    quantity: 0,
+                };
+            }
+            products[productId].quantity++;
+        });
+        products = Object.values(products);
+
+        return { ...order, products, total: Math.round(total * 100) / 100 };
     } catch (err) {
         throw err;
     }
 };
 
-const updateOrder = async ({order_id, active_order, total}) => {
+const updateOrder = async ({ order_id, active_order, total }) => {
     try {
         const {
             rows: [order],
@@ -53,53 +87,50 @@ const updateOrder = async ({order_id, active_order, total}) => {
     } catch (err) {
         throw err;
     }
-}
+};
 
-const addProductToActiveOrder = async ({user_id, product_id}) => {
+const addProductToActiveOrder = async ({ user_id, product_id }) => {
     try {
-        const activeOrder = await findActiveOrder(user_id)
+        let activeOrder = await findActiveOrder(user_id);
+
+        await db.query(
+            `
+            INSERT INTO order_product(order_id, product_id)
+            VALUES($1, $2)
+            RETURNING *
+        `,
+            [activeOrder.id, product_id]
+        );
+
+        activeOrder = await findActiveOrder(user_id);
+
+        return activeOrder;
+    } catch (err) {
+        throw err;
+    }
+};
+
+const removeProductFromActiveOrder = async ({ user_id, product_id }) => {
+    try {
+        const activeOrder = await findActiveOrder(user_id);
+        console.log(activeOrder.id, product_id);
         const {
             rows: [orderProduct],
         } = await db.query(
             `
-            // INSERT INTO order_product(order_id, product_id)
-            // VALUES($1, $2)
-            // RETURNING *
-
             DELETE FROM order_product
             WHERE order_id = $1 
             AND product_id = $2
             RETURNING *
-
         `,
-            [activeOrder.order_id, product_id]
+            [activeOrder.id, product_id]
         );
+        console.log(orderProduct);
         return orderProduct;
     } catch (err) {
-        throw err;
+        next(err);
     }
-}
-
-const removeProductFromActiveOrder = async ({user_id, product_id}) => {
-    try {
-        const activeOrder = await findActiveOrder(user_id)
-        const {
-            rows: [orderProduct],
-        } = await db.query(
-            `
-            DELETE FROM order_product(order_id, product_id)
-            WHERE order_id = $1 
-            AND product_id = $2
-            RETURNING *
-        `,
-            [activeOrder.order_id, product_id]
-        );
-        return orderProduct;
-    } catch (err) {
-        throw err;
-    }
-
-}
+};
 module.exports = {
     createOrder,
     findActiveOrder,
@@ -107,8 +138,3 @@ module.exports = {
     addProductToActiveOrder,
     removeProductFromActiveOrder,
 };
-
-
-// // INSERT INTO order_product(order_id, product_id)
-            // VALUE($1, $2)
-            // RETURNING * this was changed in removeProductFromActiveOrder
