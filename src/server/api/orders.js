@@ -53,7 +53,9 @@ ordersRouter.delete("/cart/product/:product_id", requireUser, async (req, res, n
     }
 });
 
-ordersRouter.patch("/checkout", requireUser, async (req, res, next) => {
+
+//new patch endpoint added to test
+ordersRouter.patch("/cart/checkout", requireUser, async (req, res, next) => {
     try {
         const user_id = req.user.id;
         const activeOrder = await findActiveOrder(user_id);
