@@ -136,14 +136,14 @@ const removeProductFromActiveOrder = async ({ user_id, product_id, removeAll }) 
     }
 };
 
-// function added
-const calculateTotal = (order) => {
-    // Use reduce to sum up the prices of all products in the order
-    const total = order.products.reduce((acc, product) => acc + product.price, 0);
+// // function added
+// const calculateTotal = (order) => {
+//     // Use reduce to sum up the prices of all products in the order
+//     const total = order.products.reduce((acc, product) => acc + product.price, 0);
     
-    // You might want to round the total to 2 decimal places (cents) for currency
-    return Math.round(total * 100) / 100;
-};
+//     // not sure how to round the total to 2 decimal places
+//     return Math.round(total * 100) / 100;
+// };
 
 
 
