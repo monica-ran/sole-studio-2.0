@@ -8,5 +8,6 @@ import ProductDetails from "./ProductDetails";
 import Login from './Login';
 import Signup from './Signup';
 import Footer from "./Footer";
+import UsersList from "./UsersList";
 
-export { Navigation, Home, Products, Account, About, Cart, Login, Signup, Footer, ProductDetails};
+export { Navigation, Home, Products, Account, About, Cart, Login, Signup, Footer, ProductDetails, UsersList };
