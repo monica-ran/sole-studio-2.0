@@ -110,11 +110,13 @@ const Home = () => {
         </div>
         <div className='flex flex-wrap p-5 justify-center mb-10'>
             {products.slice(0, 8).map(product => (
-              <div key={product.id} className="w-1/5 m-2 shadow-lg rounded-lg text-center">
-                <img className="w-full h-64 mr-auto ml-auto" src={product.image_url} alt={product.name} />
-                <p className="text-xl ">{product.name}</p>
-                <p className="">${product.price}</p>
-              </div>
+              <a href={`/products/${product.id}`} key={product.id} className="w-1/5 m-2 shadow-lg rounded-lg text-center hover:shadow-2xl">
+                <div>
+                  <img className="w-full h-64 mr-auto ml-auto" src={product.image_url} alt={product.name} />
+                  <p className="text-xl ">{product.name}</p>
+                  <p className="">${product.price}</p>
+                </div>
+              </a>
             ))}
             
           </div>   

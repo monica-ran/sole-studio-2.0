@@ -80,7 +80,7 @@ const Login = () => {
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 lg:w-1/4"></span>
             <Link to="/signup" className="text-xs text-center text-gray-500 uppercase">
-              or login with email
+              or sign up with email
             </Link>
             <span className="border-b w-1/5 lg:w-1/4"></span>
           </div>
@@ -114,14 +114,17 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="mt-8">
-              <button
-                className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
-                type="submit"
-              >
-                Login
-              </button>
-            </div>
+            <a href="/">
+              <div className="mt-8">
+                <button
+                  className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                  type="submit"
+                  
+                >
+                  Login
+                </button>
+              </div>
+            </a>
           </form>
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 md:w-1/4"></span>
