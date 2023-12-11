@@ -34,19 +34,17 @@ export default function Account() {
 
     return (  
         <>
-        <h1>Admin Page</h1>
-        <ul>
+        <h1 className="mt-20 text-center text-xl">Admin Page</h1>
+        <ul className="flex flex-wrap justify-center">
             {products.map((product) => (
-                <div className="product-list">
-                <li key={product.id}>
-                    <h4>#{product.id}</h4>
-                    <h3>{product.name}</h3>
-                    <h5>{product.description}</h5>
-                    <h4>${product.price}</h4>
-                    <button onClick={() => removeProduct(product.id)}>X</button>
-                    <button>Edit</button>
+                    <li key={product.id} className="shadow-lg rounded-lg m-3 w-1/6 text-center">
+                        <h4>#{product.id}</h4>
+                        <h3>{product.name}</h3>
+                        <div className="flex flex-row p-2 justify-center">
+                            <button className="mx-2 p-2 bg-blue-400 rounded-lg text-white" onClick={() => removeProduct(product.id)}>X</button>
+                            <a className="mx-2 p-2 bg-blue-400 rounded-lg text-white" href={`./edit_product/${product.id}`}>Edit</a>
+                        </div>
                 </li>
-                </div>
             ))}
         </ul>
         </>

@@ -9,5 +9,6 @@ import Login from './Login';
 import Signup from './Signup';
 import Footer from "./Footer";
 import UsersList from "./UsersList";
+import Edit from "./Edit";
 
-export { Navigation, Home, Products, Account, About, Cart, Login, Signup, Footer, ProductDetails, UsersList };
+export { Navigation, Home, Products, Account, About, Cart, Login, Signup, Footer, ProductDetails, UsersList, Edit};
