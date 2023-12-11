@@ -14,7 +14,7 @@ const createOrder = async ({ user_id, order_date }) => {
         `,
             [user_id, order_date, active_order]
         );
-        return { ...order, products: [] };
+        return order;
     } catch (err) {
         throw err;
     }
@@ -32,8 +32,7 @@ const findActiveOrder = async (user_id) => {
         );
         let order = response.rows[0];
         if (!order) {
-            const orderResponse = await createOrder({ user_id });
-            order = orderResponse.rows[0];
+           order = await createOrder({ user_id });
         }
 
         const productResponse = await db.query(
@@ -70,20 +69,23 @@ const findActiveOrder = async (user_id) => {
     }
 };
 
-const updateOrder = async ({ order_id, active_order, total }) => {
+const checkoutOrder = async ({ user_id }) => {
     try {
-        const {
-            rows: [order],
-        } = await db.query(
+        let { id, total } = await findActiveOrder(user_id);
+
+        await db.query(
             `
             UPDATE orders
-            SET active_order=$2, total=$3
-            WHERE order_id = $1
+            SET active_order=false, total=$2
+            WHERE id = $1
             RETURNING *;
         `,
-            [order_id, active_order, total]
+            [id, total]
         );
-        return order;
+
+        let activeOrder = await findActiveOrder(user_id);
+
+        return activeOrder;
     } catch (err) {
         throw err;
     }
@@ -110,31 +112,45 @@ const addProductToActiveOrder = async ({ user_id, product_id }) => {
     }
 };
 
-const removeProductFromActiveOrder = async ({ user_id, product_id }) => {
+const removeProductFromActiveOrder = async ({ user_id, product_id, removeAll }) => {
     try {
-        const activeOrder = await findActiveOrder(user_id);
-        console.log(activeOrder.id, product_id);
-        const {
-            rows: [orderProduct],
-        } = await db.query(
-            `
-            DELETE FROM order_product
-            WHERE order_id = $1 
-            AND product_id = $2
-            RETURNING *
-        `,
-            [activeOrder.id, product_id]
-        );
-        console.log(orderProduct);
-        return orderProduct;
+        let activeOrder = await findActiveOrder(user_id);
+
+        const removeAllQuery = "DELETE FROM order_product WHERE order_id = $1 AND product_id = $2 RETURNING *";
+
+        const removeOneQuery = `
+            DELETE FROM order_product WHERE id IN (
+                SELECT id FROM order_product 
+                WHERE order_id = $1 AND product_id = $2
+                LIMIT 1
+            ) RETURNING *
+        `;
+
+        await db.query(removeAll ? removeAllQuery : removeOneQuery, [activeOrder.id, product_id]);
+
+        activeOrder = await findActiveOrder(user_id);
+
+        return activeOrder;
     } catch (err) {
         next(err);
     }
 };
+
+// // function added
+// const calculateTotal = (order) => {
+//     // Use reduce to sum up the prices of all products in the order
+//     const total = order.products.reduce((acc, product) => acc + product.price, 0);
+    
+//     // not sure how to round the total to 2 decimal places
+//     return Math.round(total * 100) / 100;
+// };
+
+
+
 module.exports = {
     createOrder,
     findActiveOrder,
-    updateOrder,
+    checkoutOrder,
     addProductToActiveOrder,
     removeProductFromActiveOrder,
 };
