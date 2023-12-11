@@ -75,7 +75,7 @@ import { useNavigate } from 'react-router-dom'
 
 
 
-// NEW CODE BELOW
+// NEW CODE LISTED BELOW
 
 function Cart() {
     const navigate = useNavigate()
