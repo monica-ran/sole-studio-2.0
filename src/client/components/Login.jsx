@@ -6,7 +6,8 @@ import loginImage from './photos/login.png';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -29,7 +30,8 @@ const Login = () => {
         }),
       });
       const result = await response.json();
-      setMessage(result.message);
+      setSuccessMessage('Login successful!');
+      setErrorMessage('');
       if (!response.ok) {
         throw result;
       }
@@ -42,7 +44,8 @@ const Login = () => {
       setEmail('');
       setPassword('');
     } catch (err) {
-      console.error(`${err.name}: ${err.message}`);
+      setErrorMessage(`Error: ${err.message}`);
+      setSuccessMessage('');
     }
   };
 
@@ -52,9 +55,9 @@ const Login = () => {
   };
 
   return (
-    <div className="py-32">
+    <div className="py-32 ">
     <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
-      <div className="bg-cover w-1/2">
+      <div className="bg-cover w-1/2 hidden sm:block">
         <img
           src={loginImage} // Use the variable with the correct import path
           alt="Login"
@@ -64,24 +67,20 @@ const Login = () => {
       <div className="w-full p-8 lg:w-1/2">
           <h2 className="text-2xl font-semibold text-gray-700 text-center">Sole Studio</h2>
           <p className="text-xl text-gray-600 text-center">Welcome back!</p>
-          <a
-            href="#"
-            className="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100"
-          >
-            <div className="px-4 py-3">
-              <svg className="h-6 w-6" viewBox="0 0 40 40">
-                {/* ... (SVG paths) ... */}
-              </svg>
-            </div>
-            <h1 className="px-4 py-3 w-5/6 text-center text-gray-600 font-bold">
-              Sign in with Google
-            </h1>
-          </a>
+          
+          {successMessage && (
+            <div className="text-green-500 mt-4">{successMessage}</div>
+          )}
+
+          {errorMessage && (
+            <div className="text-red-500 mt-4">{errorMessage}</div>
+          )}
+
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 lg:w-1/4"></span>
-            <Link to="/signup" className="text-xs text-center text-gray-500 uppercase">
-              or sign up with email
-            </Link>
+            <p className="text-xs text-center text-gray-500 uppercase">
+              login with email
+            </p>
             <span className="border-b w-1/5 lg:w-1/4"></span>
           </div>
           <form onSubmit={handleSubmit}>
