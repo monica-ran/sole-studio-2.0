@@ -153,5 +153,4 @@ module.exports = {
     checkoutOrder,
     addProductToActiveOrder,
     removeProductFromActiveOrder,
-    calculateTotal,
 };
