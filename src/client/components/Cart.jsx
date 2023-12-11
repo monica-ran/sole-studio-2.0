@@ -4,6 +4,36 @@ import Logo from '../assets/solestudio - Copy.svg';
 import CartImage from './photos/cart.png';  // Adjust the path as needed
 
 export default function Cart() {
+  
+  const [cartItems, setCartItems] = useState([]);
+
+  // Function to add a product to the cart
+  const addToCart = (product) => {
+    setCartItems([...cartItems, product]);
+  };
+
+  // Function to remove a product from the cart
+  const removeFromCart = (productId) => {
+    const updatedCart = cartItems.filter((item) => item.id !== productId);
+    setCartItems(updatedCart);
+  };
+
+  // Function to handle checkout
+  const checkout = () => {
+    
+    // Not sure what goes here should we? Send cartItems to a server, updating inventory, etc.
+
+    // Display a confirmation message
+    alert('Checkout successful! Thank you for shopping with us.');
+    
+    // Clear the cart after successful checkout
+    setCartItems([]);
+  };
+
+//let me know what you all think about this. 
+//It probably needs to be edited some but its a good reference.
+
+
     return (
         <div className="h-screen bg-gray-100 pt-32">
             <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
