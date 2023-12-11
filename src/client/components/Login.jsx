@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Logo from '../assets/solestudio - Copy.svg';
 import loginImage from './photos/login.png';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate()
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -29,20 +32,31 @@ const Login = () => {
           password,
         }),
       });
+  
       const result = await response.json();
-      setSuccessMessage('Login successful!');
-      setErrorMessage('');
-      if (!response.ok) {
-        throw result;
+  
+      if (response.ok) {
+        // If login is successful
+        setSuccessMessage('Login successful!');
+        setErrorMessage('');
+        
+        // Save the token to local storage
+        if (result.token) {
+          localStorage.setItem('token', result.token);
+        }
+  
+        // Clear input fields
+        setEmail('');
+        setPassword('');
+  
+        // Navigate to the home page
+        navigate('/');
+        window.location.reload();
+      } else {
+        // If there is an error, set the error message and do not navigate
+        setErrorMessage(result.message || 'Login failed'); // or any specific error handling logic
+        setSuccessMessage('');
       }
-
-      // save the token to local storage
-      if (result.token) {
-        localStorage.setItem('token', result.token);
-
-      }  
-      setEmail('');
-      setPassword('');
     } catch (err) {
       setErrorMessage(`Error: ${err.message}`);
       setSuccessMessage('');

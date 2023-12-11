@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/solestudio - Copy.svg';
 import signUpImage from './photos/signup.png';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
 
@@ -11,6 +12,8 @@ const [email, setEmail] = useState('');
 const [password, setPass] = useState('');
 const [successMessage, setSuccessMessage] = useState('');
 const [errorMessage, setErrorMessage] = useState('');
+
+const navigate = useNavigate()
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -30,7 +33,9 @@ const handleSubmit = async (e) => {
     const data = await response.json();
     localStorage.setItem('token', data.token);
     setSuccessMessage('Account created successfully!');
-    setErrorMessage('');
+    setErrorMessage('Please try again with the correct email and password.');
+    navigate('/')
+    window.location.reload();
   } catch (error) {
     setErrorMessage(`Error: ${error.message}`);
     setSuccessMessage('');
