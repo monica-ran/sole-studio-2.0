@@ -58,7 +58,7 @@ usersRouter.post("/login", async (req, res, next) => {
 });
 
 usersRouter.post("/register", async (req, res, next) => {
-    const { name, email, password } = req.body;
+    const { first_name, last_name, email, password } = req.body;
 
     try {
         const _user = await getUserByEmail(email);
@@ -71,7 +71,8 @@ usersRouter.post("/register", async (req, res, next) => {
         }
 
         const user = await createUser({
-            name,
+            first_name,
+            last_name,
             email,
             password,
         });

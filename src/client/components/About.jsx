@@ -8,7 +8,7 @@ import avatarImage5 from './avatar/girl3.png';
 
 const About = () => {
   return (
-    <section style={{ background: '#FFFFFF', color: '#000000' }} className="mt-16 pt-16">
+    <section style={{ background: '#FFFFFF', color: '#000000' }} className="pt-16">
       <div className="container px-6 mx-auto flex flex-col lg:flex-row items-center justify-between">
         <div className="text-center lg:text-left mb-4 lg:mb-0">
           <h1 className="text-3xl font-semibold capitalize lg:text-4xl">
