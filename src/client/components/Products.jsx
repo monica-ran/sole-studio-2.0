@@ -20,18 +20,13 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  // const handleLinkClick = (productId) => {
-  //   // Navigate to the product details page when the link is clicked
-  //   window.location.href = `/products/${productId}`;
-  // };
-
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div className="bg-white">
-      <main className="pt-28">
+    <div className="bg-white min-h-screen flex flex-col ">
+      <main className="pt-28 py-94">
       <div class="relative mt-6 max-w-lg mx-auto">
             <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                 <svg class="h-5 w-5 text-gray-500" viewBox="0 0 24 24" fill="none">

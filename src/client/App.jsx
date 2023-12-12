@@ -1,6 +1,6 @@
 import { useState, React} from 'react'
 import { Route, Routes} from 'react-router-dom'
-import { Navigation, About, Account, Cart, Home, Products, Login, Signup, Footer, ProductDetails, UsersList } from './components/index.js'
+import { Navigation, About, Account, Cart, Home, Products, Login, Signup, Footer, ProductDetails, UsersList, Add, Edit } from './components/index.js'
 
 function App() {
   return (
@@ -16,6 +16,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/users" element={<UsersList />} />
+        <Route path="/edit_product/:productId" element={<Edit />}/>
+        <Route path="/add_product" element={<Add />} />
       </Routes>
       <Footer />
     </>

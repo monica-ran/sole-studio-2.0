@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Logo from '../assets/solestudio - Copy.svg';
 import loginImage from './photos/login.png';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate()
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -29,20 +32,41 @@ const Login = () => {
           password,
         }),
       });
+  
       const result = await response.json();
-      setSuccessMessage('Login successful!');
-      setErrorMessage('');
-      if (!response.ok) {
-        throw result;
+  
+      if (response.ok) {
+        // If login is successful
+        if (result.token) {
+          setSuccessMessage('Login successful!');
+          setErrorMessage('');
+  
+          // Save the token to local storage
+          localStorage.setItem('token', result.token);
+  
+          // Clear input fields
+          setEmail('');
+          setPassword('');
+  
+          // Navigate to the home page
+          navigate('/');
+          window.location.reload();
+        } else {
+          // Handle the case where a token is not present in the response
+          setErrorMessage('Email or password is incorrect');
+          setSuccessMessage('');
+        }
+      } else {
+        // If there is an error, set the error message and do not navigate
+        if (result.name === 'MissingCredentialsError') {
+          setErrorMessage('Please supply both an email and password');
+        } else if (result.name === 'IncorrectCredentialsError') {
+          setErrorMessage('Username or password is incorrect');
+        } else {
+          setErrorMessage(result.message || 'Login failed'); // or any specific error handling logic
+          setSuccessMessage('');
+        }
       }
-
-      // save the token to local storage
-      if (result.token) {
-        localStorage.setItem('token', result.token);
-
-      }  
-      setEmail('');
-      setPassword('');
     } catch (err) {
       setErrorMessage(`Error: ${err.message}`);
       setSuccessMessage('');
@@ -55,19 +79,19 @@ const Login = () => {
   };
 
   return (
-    <div className="py-32 ">
-    <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
-      <div className="bg-cover w-1/2 hidden sm:block">
-        <img
-          src={loginImage} // Use the variable with the correct import path
-          alt="Login"
-          className="object-cover w-full h-full"
-        />
-      </div>
-      <div className="w-full p-8 lg:w-1/2">
+    <div className="py-64">
+      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+        <div className="bg-cover w-1/2 hidden sm:block">
+          <img
+            src={loginImage}
+            alt="Login"
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <div className="w-full p-8 lg:w-1/2">
           <h2 className="text-2xl font-semibold text-gray-700 text-center">Sole Studio</h2>
           <p className="text-xl text-gray-600 text-center">Welcome back!</p>
-          
+
           {successMessage && (
             <div className="text-green-500 mt-4">{successMessage}</div>
           )}
@@ -101,9 +125,6 @@ const Login = () => {
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Password
                 </label>
-                <a href="#" className="text-xs text-gray-500">
-                  Forget Password?
-                </a>
               </div>
               <input
                 className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"

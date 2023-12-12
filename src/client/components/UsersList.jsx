@@ -3,6 +3,7 @@ import axios from "axios";
 
 export default function UsersList() {
     const [users, setUsers] = useState([]);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         fetchUsers();
@@ -12,16 +13,21 @@ export default function UsersList() {
         let API = "http://localhost:3000/api";
 
         try {
-            const response = await axios.get(`${API}/users`);
-            console.log(response);
-            setUsers(response.data);
+            const response = await axios.get(`${API}/users`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(token);
+            setUsers(response.data.users);
+            console.log(response.data.users)
         } catch (err) {
             console.error("Error fetching users:", err);
         }
     }
 
     return (
-        <ul>
+        <ul style={{marginTop: "80px"}}>
             {users.map((user) => (
                 <li key={user.id}>
                     <h4>#{user.id}</h4>

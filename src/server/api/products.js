@@ -27,6 +27,7 @@ productsRouter.get("/:productId", async (req, res, next) => {
 productsRouter.post("/", requireAdmin, async (req, res, next) => {
     try {
         const product = await createProduct(req.body);
+    
         res.send(product);
     } catch (error) {
         next(error);

@@ -3,6 +3,7 @@ import axios from "axios";
 
 export default function Account() {
     const [products, setProducts] = useState([]);
+    const token = localStorage.getItem("token")
 
     useEffect(() => {
         fetchProducts();
@@ -12,8 +13,12 @@ export default function Account() {
         let API = "http://localhost:3000/api";
 
         try {
-            const response = await axios.get(`${API}/products`);
-            console.log(response);
+            const response = await axios.get(`${API}/products`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            
             setProducts(response.data);
         } catch (err) {
             console.error("Error fetching products:", err);
@@ -24,29 +29,31 @@ export default function Account() {
         let API = "http://localhost:3000/api";
 
         try {
-            await axios.delete(`${API}/products/${id}`);
+            await axios.delete(`${API}/products/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
             fetchProducts();
         } catch (err) {
-            console.error(err.message);
+            console.error("Error deleting product:", err);
         }
     }
 
-    return (  
+    return (
         <>
-        <h1>Admin Page</h1>
-        <ul>
+        <h1 className="mt-20 text-center text-xl">Admin Page</h1>
+        <ul className="flex flex-wrap justify-center">
             {products.map((product) => (
-                <div className="product-list">
-                <li key={product.id}>
-                    <h4>#{product.id}</h4>
-                    <h3>{product.name}</h3>
-                    <h5>{product.description}</h5>
-                    <h4>${product.price}</h4>
-                    <button onClick={() => removeProduct(product.id)}>X</button>
-                    <button>Edit</button>
+                    <li key={product.id} className="shadow-lg rounded-lg m-3 w-1/6 text-center">
+                        <h4>#{product.id}</h4>
+                        <h3>{product.name}</h3>
+                        <div className="flex flex-row p-2 justify-center">
+                            <button className="mx-2 p-2 bg-blue-400 rounded-lg text-white" onClick={() => removeProduct(product.id)}>X</button>
+                            <a className="mx-2 p-2 bg-blue-400 rounded-lg text-white" href={`./edit_product/${product.id}`}>Edit</a>
+                        </div>
                 </li>
-                </div>
             ))}
         </ul>
         </>
