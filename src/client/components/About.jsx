@@ -11,15 +11,15 @@ const About = () => {
     <section style={{ background: '#FFFFFF', color: '#000000' }} className="pt-16">
       <div className="container px-6 mx-auto flex flex-col lg:flex-row items-center justify-between">
         <div className="text-center lg:text-left mb-4 lg:mb-0">
-          <h1 className="text-3xl font-semibold capitalize lg:text-4xl">
+          <h1 className="text-3xl font-semibold capitalize lg:text-4xl hidden md:block">
             Explore Our Mission - <span style={{ textDecoration: 'underline', color: 'black' }}>Sole Studio</span>
           </h1>
         </div>
-        <div className="text-center lg:text-right mb-4 lg:mb-0">
+        <div className="text-center lg:text-right mb-4 lg:mb-0 hidden md:block">
           <img src={aboutImage} alt="About" className="mx-auto w-64 h-64 mb-2" />
         </div>
       </div>
-      <div className="container px-6 py-6 mx-auto">
+      <div className="container px-14 py-14 mx-auto">
         <div className="grid grid-cols-1 gap-4 mt-4 xl:mt-8 xl:gap-8 md:grid-cols-2 xl:grid-cols-3">
           {/* Section 1 */}
           <div className="p-4 space-y-3 border-2 border-blue-400 rounded-xl">
@@ -29,7 +29,7 @@ const About = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.879 16.121A3 3 0 10012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
               </svg>
             </span>
-            <h1 className="text-2xl font-semibold text-blue-400 capitalize dark:text-black">Style and Sustainability</h1>
+            <h1 className="text-2xl font-semibold text-blue-400 capitalize dark:text-black text-left">Style and Sustainability</h1>
             <p className="text-blue-400 dark:text-blue-400">
               At Sole Studio's, our mission is to lead the industry in providing stylish and comfortable footwear while prioritizing sustainability. We commit to creating shoes that tread lightly on the planet by utilizing eco-friendly materials, reducing waste, and promoting ethical practices. Step into a greener tomorrow with Sole Studio.
             </p>

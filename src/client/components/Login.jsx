@@ -37,25 +37,35 @@ const Login = () => {
   
       if (response.ok) {
         // If login is successful
-        setSuccessMessage('Login successful!');
-        setErrorMessage('');
-        
-        // Save the token to local storage
         if (result.token) {
+          setSuccessMessage('Login successful!');
+          setErrorMessage('');
+  
+          // Save the token to local storage
           localStorage.setItem('token', result.token);
+  
+          // Clear input fields
+          setEmail('');
+          setPassword('');
+  
+          // Navigate to the home page
+          navigate('/');
+          window.location.reload();
+        } else {
+          // Handle the case where a token is not present in the response
+          setErrorMessage('Email or password is incorrect');
+          setSuccessMessage('');
         }
-  
-        // Clear input fields
-        setEmail('');
-        setPassword('');
-  
-        // Navigate to the home page
-        navigate('/');
-        window.location.reload();
       } else {
         // If there is an error, set the error message and do not navigate
-        setErrorMessage(result.message || 'Login failed'); // or any specific error handling logic
-        setSuccessMessage('');
+        if (result.name === 'MissingCredentialsError') {
+          setErrorMessage('Please supply both an email and password');
+        } else if (result.name === 'IncorrectCredentialsError') {
+          setErrorMessage('Username or password is incorrect');
+        } else {
+          setErrorMessage(result.message || 'Login failed'); // or any specific error handling logic
+          setSuccessMessage('');
+        }
       }
     } catch (err) {
       setErrorMessage(`Error: ${err.message}`);
@@ -69,19 +79,19 @@ const Login = () => {
   };
 
   return (
-    <div className="py-32 ">
-    <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
-      <div className="bg-cover w-1/2 hidden sm:block">
-        <img
-          src={loginImage} // Use the variable with the correct import path
-          alt="Login"
-          className="object-cover w-full h-full"
-        />
-      </div>
-      <div className="w-full p-8 lg:w-1/2">
+    <div className="py-64">
+      <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
+        <div className="bg-cover w-1/2 hidden sm:block">
+          <img
+            src={loginImage}
+            alt="Login"
+            className="object-cover w-full h-full"
+          />
+        </div>
+        <div className="w-full p-8 lg:w-1/2">
           <h2 className="text-2xl font-semibold text-gray-700 text-center">Sole Studio</h2>
           <p className="text-xl text-gray-600 text-center">Welcome back!</p>
-          
+
           {successMessage && (
             <div className="text-green-500 mt-4">{successMessage}</div>
           )}
@@ -115,9 +125,6 @@ const Login = () => {
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Password
                 </label>
-                <a href="#" className="text-xs text-gray-500">
-                  Forget Password?
-                </a>
               </div>
               <input
                 className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
@@ -127,17 +134,14 @@ const Login = () => {
                 required
               />
             </div>
-            <a href="/">
-              <div className="mt-8">
-                <button
-                  className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
-                  type="submit"
-                  
-                >
-                  Login
-                </button>
-              </div>
-            </a>
+            <div className="mt-8">
+              <button
+                className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
+                type="submit"
+              >
+                Login
+              </button>
+            </div>
           </form>
           <div className="mt-4 flex items-center justify-between">
             <span className="border-b w-1/5 md:w-1/4"></span>
