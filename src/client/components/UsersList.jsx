@@ -27,7 +27,7 @@ export default function UsersList() {
     }
 
     return (
-        <ul>
+        <ul style={{marginTop: "80px"}}>
             {users.map((user) => (
                 <li key={user.id}>
                     <h4>#{user.id}</h4>

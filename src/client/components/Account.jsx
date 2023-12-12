@@ -18,7 +18,7 @@ export default function Account() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response);
+            
             setProducts(response.data);
         } catch (err) {
             console.error("Error fetching products:", err);
@@ -46,13 +46,13 @@ export default function Account() {
             <h1>Admin Page</h1>
             <ul>
                 {products.map((product) => (
-                    <div className="product-list">
-                        <li key={product.id}>
+                    <div key={product.id} className="product-list">
+                        <li>
                             <h4>#{product.id}</h4>
                             <h3>{product.name}</h3>
                             <h5>{product.description}</h5>
                             <h4>${product.price}</h4>
-                            <button onClick={() => removeProduct(product.productId)}>X</button>
+                            <button onClick={() => removeProduct(product.id)}>X</button>
                             <button>Edit</button>
                         </li>
                     </div>

@@ -14,25 +14,24 @@ function Add() {
 
     const [successMsg, setSuccessMsg] = useState("");
 
-    const navigate = useNavigate;
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         let API = "http://localhost:3000/api";
         try {
-            console.log(data)
-            const data = await axios.post(
-                
+            const response = await axios.post(
                 `${API}/products`,
+                { name, description, price, imageUrl, size },
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                },
-                { name, description, price, imageUrl, size }
+                }
             );
-
-            if (data.success) {
+        
+            if (response.status === 200) {
                 setSuccessMsg("A new product was successfully added");
             } else {
                 setSuccessMsg("There was an error in adding a new product. Please check console.");
@@ -45,30 +44,30 @@ function Add() {
     };
 
     return (
-        <div>
+        <div style={{ marginTop: "80px" }}>
             <form onSubmit={handleSubmit}>
                 <label>
                     Name:
-                    <input id="formInput" value={name} onChange={(e) => setName(e.target.value)} />
+                    <input id="formInput" value={name} onChange={(e) => setName(e.target.value)}></input>
                 </label>
 
                 <label>
-                    Name:
+                    Description:
                     <input id="formInput" value={description} onChange={(e) => setDescription(e.target.value)} />
                 </label>
 
                 <label>
-                    Name:
+                    Price:
                     <input id="formInput" value={price} onChange={(e) => setPrice(e.target.value)} />
                 </label>
 
                 <label>
-                    Name:
+                    Size:
                     <input id="formInput" value={size} onChange={(e) => setSize(e.target.value)} />
                 </label>
 
                 <label>
-                    Name:
+                    Image:
                     <input id="formInput" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
                 </label>
 
