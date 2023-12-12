@@ -7,20 +7,29 @@ import { useNavigate } from 'react-router-dom'
 
 function Cart() {
     const navigate = useNavigate()
-    const [total, setTotal] = useState(0)
-  // gets cart items form local storage 
+    const [total, setTotal] = useState(0);
+    // gets cart items form local storage 
       const carts = JSON.parse(localStorage.getItem('cart')) || [];
 
       const calculateTotal = (cartItems) => {
-        return cartItems.reduce((acc, item) => {
+        const total = cartItems.reduce((acc, item) => {
           const itemTotal = parseFloat(item.price) * item.quantity;
+          if (item.title === undefined) {
+            console.log(`Item title is undefined for item:`, item);
+          } else {
+            console.log(`Item total for ${item.title}: ${itemTotal}`);
+          }
           return acc + itemTotal;
         }, 0);
+      
+        console.log(`Total calculated: ${total}`);
+        return total;
       };
+      
+      
 
       const addItemToCart = (item) => {
-        const price = parseFloat(item.price);
-        const updatedCart = [...carts, { ...item, quantity: 1, price }];
+        const updatedCart = [...carts, { ...item, quantity: 1 }];
         localStorage.setItem('cart', JSON.stringify(updatedCart));
         const calculatedTotal = calculateTotal(updatedCart);
         setTotal(calculatedTotal);
@@ -31,19 +40,15 @@ function Cart() {
 const handleQuantityChange = (id, newQuantity) => {
   const updatedCart = carts.map((item) => {
     if (item.id === id) {
-      // const parsedPrice = parseFloat(item.price);
-      // const price = !isNaN(parsedPrice) ? parsedPrice : 0; // Use 0 if parsing fails
       return {
         ...item,
-        quantity: Math.max( 1, Number(newQuantity)), // Ensure newQuantity is a number
-        price: price,
+        quantity: Math.max(1, Number(newQuantity)),
       };
     }
     return item;
   });
+
   localStorage.setItem('cart', JSON.stringify(updatedCart));
-  const calculatedTotal = calculateTotal(updatedCart);
-    setTotal(calculatedTotal);
 };
 
       // update the total whenver the cart items change 
@@ -51,7 +56,11 @@ const handleQuantityChange = (id, newQuantity) => {
         const calculatedTotal = calculateTotal(carts);
         setTotal(calculatedTotal);
       }, [carts]);
-    
+      
+      
+      useEffect(() => {
+        navigate('/cart'); // Navigate to refresh the page and update the UI
+      }, [total]);
   
         // Handle incrementing the quantity of an item in the cart
       const handleInc = (id) => {
@@ -135,8 +144,8 @@ const handleQuantityChange = (id, newQuantity) => {
                     <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
                   </svg>
                 </div>
-                <span className="text-center w-1/5 font-semibold text-sm">${Number(cart?.price)}</span>
-                <span className="text-center w-1/5 font-semibold text-sm">${(cart?.price * cart?.quantity).toFixed(2)}</span>
+                <span className="text-center w-1/5 font-semibold text-sm">${parseFloat(cart?.price).toFixed(2)}</span>
+                <span className="text-center w-1/5 font-semibold text-sm">${(parseFloat(cart?.price) * cart?.quantity).toFixed(2)}</span>
               </div>
             ))}
             <Link to={'/products'} className="flex font-semibold text-gray-900 text-sm mt-10">
