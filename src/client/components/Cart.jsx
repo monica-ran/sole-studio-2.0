@@ -8,59 +8,50 @@ import { useNavigate } from 'react-router-dom'
 function Cart() {
     const navigate = useNavigate()
     const [total, setTotal] = useState(0)
-
   // gets cart items form local storage 
       const carts = JSON.parse(localStorage.getItem('cart')) || [];
-      console.log('Cart items:', carts);
 
-  // Example: when adding an item to the cart
-  const addItemToCart = (item) => {
-    //   // Convert the price to a number
-    const price = parseFloat(item.price);
+      const calculateTotal = (cartItems) => {
+        return cartItems.reduce((acc, item) => {
+          const itemTotal = parseFloat(item.price) * item.quantity;
+          return acc + itemTotal;
+        }, 0);
+      };
 
-  const updatedCart = [...carts, { ...item, quantity: 1, price }]; // Ensure quantity is defined
-  localStorage.setItem('cart', JSON.stringify(updatedCart));
-  
-  // Calculate the new total asynchronously and update the state
-  setTimeout(() => {
-    const calculatedTotal = updatedCart.reduce((acc, item) => {
-      return acc + item.price * item.quantity;
-    }, 0);
-    console.log('Updated Total:', calculatedTotal); 
-    setTotal(calculatedTotal);
-  }, 0);
-
-  navigate('/cart');
-};
+      const addItemToCart = (item) => {
+        const price = parseFloat(item.price);
+        const updatedCart = [...carts, { ...item, quantity: 1, price }];
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        const calculatedTotal = calculateTotal(updatedCart);
+        setTotal(calculatedTotal);
+        navigate('/cart');
+      };
 
 // handle changes of quanity 
 const handleQuantityChange = (id, newQuantity) => {
   const updatedCart = carts.map((item) => {
     if (item.id === id) {
-      const parsedPrice = parseFloat(item.price);
-      const price = !isNaN(parsedPrice) ? parsedPrice : 0; // Use 0 if parsing fails
+      // const parsedPrice = parseFloat(item.price);
+      // const price = !isNaN(parsedPrice) ? parsedPrice : 0; // Use 0 if parsing fails
       return {
         ...item,
-        quantity: Number(newQuantity), // Ensure newQuantity is a number
+        quantity: Math.max( 1, Number(newQuantity)), // Ensure newQuantity is a number
         price: price,
       };
     }
     return item;
   });
   localStorage.setItem('cart', JSON.stringify(updatedCart));
+  const calculatedTotal = calculateTotal(updatedCart);
+    setTotal(calculatedTotal);
 };
 
       // update the total whenver the cart items change 
       useEffect(() => {
-        const calculatedTotal = carts.reduce((acc, item) => {
-          const itemTotal = parseFloat(item.price) * item.quantity;
-          console.log(`Item Total for ${item.name}: $${itemTotal}`);
-          return acc + item.price * item.quantity;
-        }, 0);
-        console.log('Updated Total:', calculatedTotal); 
-        // testing to see why total isnt working ;//
+        const calculatedTotal = calculateTotal(carts);
         setTotal(calculatedTotal);
       }, [carts]);
+    
   
         // Handle incrementing the quantity of an item in the cart
       const handleInc = (id) => {
@@ -105,7 +96,6 @@ const handleQuantityChange = (id, newQuantity) => {
       
     // If the cart is empty, display a message
       if(carts.length===0){
-        console.error('Cart is empty');
         return <h1 className=' h-[55vh] flex justify-center items-center text-4xl'>Cart is Empty</h1>
       }
        
@@ -158,14 +148,7 @@ const handleQuantityChange = (id, newQuantity) => {
           <div id="summary" className="w-2/4 px-8 py-10 container flex justify-between">
             <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
             <div className="flex flex-wrap justify-between mt-10">
-              {/* <span className="font-semibold text-sm uppercase">Items {carts?.length}</span> */}
-              {/* <span className="font-semibold text-sm">${total.toFixed(2)}</span> */}
             </div>
-            {/* <div className="py-7 mt-2">
-              <label htmlFor="promo" className="font-semibold inline-block text-sm uppercase">Promo Code</label>
-              <input type="text" id="promo" placeholder="Enter your code" className="p-2 text-sm w-full" />
-            </div>
-            <button className="bg-red-500 hover:bg-red-600 px-3 py-1 text-sm text-white uppercase">Apply</button> */}
             <div className="border-t mt-8">
               <div className="flex font-semibold justify-between py-6 text-sm uppercase">
                 <span>Total cost</span>
