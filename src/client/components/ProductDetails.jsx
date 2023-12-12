@@ -5,8 +5,7 @@ function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const { productId } = useParams();
-  const navigate = useNavigate (); 
-  // ^added line 8 and imported it to link the cart page 
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -17,9 +16,9 @@ function ProductDetails() {
         }
         const data = await response.json();
         setProduct(data);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching product:', error);
+      } finally {
         setLoading(false);
       }
     };
@@ -36,21 +35,28 @@ function ProductDetails() {
   }
 
   const handleBuyNow = () => {
+    // Ensure that the product has the necessary properties
+    if (!product.id || !product.name || !product.price) {
+      console.error('Invalid product data:', product);
+      return;
+    }
+
     // Retrieve existing cart from local storage
-  const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
 
-  // Update the cart with the new product
-  const updatedCart = [...existingCart, product];
+    // Update the cart with the new product
+    const updatedCart = [...existingCart, product];
 
-  // Save the updated cart back to local storage
-  localStorage.setItem('cart', JSON.stringify(updatedCart));
+    // Save the updated cart back to local storage
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
 
-  // Navigate to the cart page
-  navigate('/cart');
+    // Navigate to the cart page
+    navigate('/cart');
 
-  console.log('Product added to cart:', product);
-  console.log('Updated cart:', updatedCart);
-  }; 
+    console.log('Product added to cart:', product);
+    console.log('Updated cart:', updatedCart);
+  };
+
 
   return (
     <div className="min-w-screen min-h-screen bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden relative">
