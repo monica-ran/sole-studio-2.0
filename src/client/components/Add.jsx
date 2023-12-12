@@ -44,34 +44,34 @@ function Add() {
     };
 
     return (
-        <div style={{ marginTop: "80px" }}>
-            <form onSubmit={handleSubmit}>
+        <div style={{ marginTop: "80px" }} className='text-center'>
+            <form onSubmit={handleSubmit} className='mr-auto py-10 ml-auto  '>
                 <label>
                     Name:
-                    <input id="formInput" value={name} onChange={(e) => setName(e.target.value)}></input>
+                    <input id="formInput" className="border mx-2" value={name} onChange={(e) => setName(e.target.value)}></input>
                 </label>
 
                 <label>
                     Description:
-                    <input id="formInput" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <input id="formInput" className="border mx-2" value={description} onChange={(e) => setDescription(e.target.value)} />
                 </label>
 
                 <label>
                     Price:
-                    <input id="formInput" value={price} onChange={(e) => setPrice(e.target.value)} />
+                    <input id="formInput" className="border mx-2" value={price} onChange={(e) => setPrice(e.target.value)} />
                 </label>
 
                 <label>
                     Size:
-                    <input id="formInput" value={size} onChange={(e) => setSize(e.target.value)} />
+                    <input id="formInput" className="border mx-2" value={size} onChange={(e) => setSize(e.target.value)} />
                 </label>
 
                 <label>
                     Image:
-                    <input id="formInput" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
-                </label>
+                    <input id="formInput" className="border mx-2" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                </label><br/>
 
-                <button id="formInput" type="submit">
+                <button id="formInput" type="submit" className='p-2 m-5 bg-blue-400 text-white rounded-lg'>
                     Add New Product
                 </button>
             </form>
