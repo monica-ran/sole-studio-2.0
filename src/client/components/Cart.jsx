@@ -1,113 +1,94 @@
 import { Link } from 'react-router-dom';
-import Logo from '../assets/solestudio - Copy.svg';
-import CartImage from './photos/cart.png';
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom' 
-
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Cart() {
-    const navigate = useNavigate()
-    const [total, setTotal] = useState(0);
-    // gets cart items form local storage 
-      const carts = JSON.parse(localStorage.getItem('cart')) || [];
+  const navigate = useNavigate();
+  const [total, setTotal] = useState(0);
+  const carts = JSON.parse(localStorage.getItem('cart')) || [];
 
-      const calculateTotal = (cartItems) => {
-        const total = cartItems.reduce((acc, item) => {
-          const itemTotal = parseFloat(item.price) * item.quantity;
-          if (item.title === undefined) {
-            console.log(`Item title is undefined for item:`, item);
-          } else {
-            console.log(`Item total for ${item.title}: ${itemTotal}`);
-          }
-          return acc + itemTotal;
-        }, 0);
-      
-        console.log(`Total calculated: ${total}`);
-        return total;
-      };
-      
-      
-
-      const addItemToCart = (item) => {
-        const updatedCart = [...carts, { ...item, quantity: 1 }];
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
-        const calculatedTotal = calculateTotal(updatedCart);
-        setTotal(calculatedTotal);
-        navigate('/cart');
-      };
-
-// handle changes of quanity 
-const handleQuantityChange = (id, newQuantity) => {
-  const updatedCart = carts.map((item) => {
-    if (item.id === id) {
-      return {
-        ...item,
-        quantity: Math.max(1, Number(newQuantity)),
-      };
-    }
-    return item;
-  });
-
-  localStorage.setItem('cart', JSON.stringify(updatedCart));
-};
-
-      // update the total whenver the cart items change 
-      useEffect(() => {
-        const calculatedTotal = calculateTotal(carts);
-        setTotal(calculatedTotal);
-      }, [carts]);
-      
-      
-      useEffect(() => {
-        navigate('/cart'); // Navigate to refresh the page and update the UI
-      }, [total]);
-  
-        // Handle incrementing the quantity of an item in the cart
-      const handleInc = (id) => {
-        const updatedCart = carts.map((item) => {
-          if (item.id === id) {
-            return {
-              ...item,
-              quantity: item.quantity + 1,
-            };
-          }
-          return item;
-        });
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
-        // Navigate to refresh the page and update the UI
-        navigate('/cart');
-      };
-  
-        // Handle decrementing the quantity of an item in the cart
-        const handleDec = (id) => {
-          const updatedCart = carts.map((item) => {
-            if (item.id === id) {
-              const newQuantity = Math.max(1, item.quantity - 1);
-              return {
-                ...item,
-                quantity: newQuantity,
-              };
-            }
-            return item;
-          });
-          localStorage.setItem('cart', JSON.stringify(updatedCart));
-          // Navigate to refresh the page and update the UI
-          navigate('/cart');
-        };
-
-       // Handle removing a product from the cart
-     const removeProduct = (id) => {
-      const updatedCart = carts.filter((item) => item.id !== id);
-     localStorage.setItem('cart', JSON.stringify(updatedCart));
-     // Navigate to refresh the page and update the UI
-     navigate('/cart');
-       };
-      
-    // If the cart is empty, display a message
-      if(carts.length===0){
-        return <h1 className=' h-[55vh] flex justify-center items-center text-4xl'>Cart is Empty</h1>
+  const calculateTotal = (cartItems) => {
+    const total = cartItems.reduce((acc, item) => {
+      if (!item.id || !item.name || !item.price) {
+        console.error('Invalid item data:', item);
+        return acc;
       }
-       
+
+      const itemTotal = parseFloat(item.price) * (item.quantity || 1);
+      if (isNaN(itemTotal)) {
+        console.error(`Invalid item total for ${item.name}: ${itemTotal}`);
+        return acc;
+      }
+
+      console.log(`Item total for ${item.name}: ${itemTotal}`);
+      return acc + itemTotal;
+    }, 0);
+
+    console.log(`Total calculated: ${total}`);
+    return total;
+  };
+
+  const handleQuantityChange = (id, newQuantity) => {
+    const updatedCart = carts.map((item) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          quantity: Math.max(1, Number(newQuantity)),
+        };
+      }
+      return item;
+    });
+
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    const calculatedTotal = calculateTotal(updatedCart);
+    console.log(`Total after quantity change: ${calculatedTotal}`);
+  };
+
+  useEffect(() => {
+    const calculatedTotal = calculateTotal(carts);
+    console.log(`Total after cart items change: ${calculatedTotal}`);
+    setTotal(calculatedTotal);
+  }, [carts]);
+
+  const handleInc = (id) => {
+    const updatedCart = carts.map((item) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          quantity: item.quantity + 1,
+        };
+      }
+      return item;
+    });
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    navigate('/cart');
+  };
+
+  const handleDec = (id) => {
+    const updatedCart = carts.map((item) => {
+      if (item.id === id) {
+        const newQuantity = Math.max(1, item.quantity - 1);
+        return {
+          ...item,
+          quantity: newQuantity,
+        };
+      }
+      return item;
+    });
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    navigate('/cart');
+  };
+
+  const removeProduct = (id) => {
+    const updatedCart = carts.filter((item) => item.id !== id);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    navigate('/cart');
+  };
+
+  if (carts.length === 0) {
+    return <h1 className=' h-[55vh] flex justify-center items-center text-4xl'>Cart is Empty</h1>;
+  }
+
       // render the cart items 
       return (
         <div className="container mx-auto mt-10">
