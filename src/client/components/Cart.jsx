@@ -15,8 +15,21 @@ function Cart() {
 
   // Example: when adding an item to the cart
   const addItemToCart = (item) => {
-  const updatedCart = [...carts, { ...item, quantity: 1 }]; // Ensure quantity is defined
+    //   // Convert the price to a number
+    const price = parseFloat(item.price);
+
+  const updatedCart = [...carts, { ...item, quantity: 1, price }]; // Ensure quantity is defined
   localStorage.setItem('cart', JSON.stringify(updatedCart));
+  
+  // Calculate the new total asynchronously and update the state
+  setTimeout(() => {
+    const calculatedTotal = updatedCart.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0);
+    console.log('Updated Total:', calculatedTotal); 
+    setTotal(calculatedTotal);
+  }, 0);
+
   navigate('/cart');
 };
 
@@ -24,24 +37,28 @@ function Cart() {
 const handleQuantityChange = (id, newQuantity) => {
   const updatedCart = carts.map((item) => {
     if (item.id === id) {
+      const parsedPrice = parseFloat(item.price);
+      const price = !isNaN(parsedPrice) ? parsedPrice : 0; // Use 0 if parsing fails
       return {
         ...item,
-        quantity: newQuantity,
+        quantity: Number(newQuantity), // Ensure newQuantity is a number
+        price: price,
       };
     }
     return item;
   });
   localStorage.setItem('cart', JSON.stringify(updatedCart));
-  // No need to navigate here since the input change won't trigger a route change
 };
 
-
-  
       // update the total whenver the cart items change 
       useEffect(() => {
         const calculatedTotal = carts.reduce((acc, item) => {
+          const itemTotal = parseFloat(item.price) * item.quantity;
+          console.log(`Item Total for ${item.name}: $${itemTotal}`);
           return acc + item.price * item.quantity;
         }, 0);
+        console.log('Updated Total:', calculatedTotal); 
+        // testing to see why total isnt working ;//
         setTotal(calculatedTotal);
       }, [carts]);
   
@@ -107,8 +124,8 @@ const handleQuantityChange = (id, newQuantity) => {
               <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Price</h3>
               <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Total</h3>
             </div>
-            {carts?.map(cart => (
-              <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5" key={cart.id}>
+            {carts?.map((cart) => (
+        <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5" key={cart.id}>
                 <div className="flex w-2/5">
                   <div className="w-20">
                     <img className="h-24" src={cart?.image_url} alt={cart?.title} />
@@ -123,12 +140,12 @@ const handleQuantityChange = (id, newQuantity) => {
                   <svg className="fill-current text-gray-600 w-3 cursor-pointer" viewBox="0 0 448 512" onClick={() => handleDec(cart?.id)}><path d="M416 208H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h384c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
                   </svg>
   {/* Initialize to 1 or another default value */}
-  <input className="mx-2 border text-center w-8" type="text" value={cart?.quantity || 1} onChange={(e) => handleQuantityChange(cart?.id, e.target.value)}/>  
+  <input id={`quantity-${cart?.id}`} className="mx-2 border text-center w-8" type="text" value={cart?.quantity || 1} onChange={(e) => handleQuantityChange(cart?.id, e.target.value)}/>
                   <svg className="fill-current text-gray-600 w-3 cursor-pointer" onClick={() => handleInc(cart?.id)} viewBox="0 0 448 512">
                     <path d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z" />
                   </svg>
                 </div>
-                <span className="text-center w-1/5 font-semibold text-sm">${cart?.price}</span>
+                <span className="text-center w-1/5 font-semibold text-sm">${Number(cart?.price)}</span>
                 <span className="text-center w-1/5 font-semibold text-sm">${(cart?.price * cart?.quantity).toFixed(2)}</span>
               </div>
             ))}
@@ -138,7 +155,7 @@ const handleQuantityChange = (id, newQuantity) => {
             </Link>
           </div>
   
-          <div id="summary" className="w-2/4 px-8 py-10 container">
+          <div id="summary" className="w-2/4 px-8 py-10 container flex justify-between">
             <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
             <div className="flex flex-wrap justify-between mt-10">
               {/* <span className="font-semibold text-sm uppercase">Items {carts?.length}</span> */}
@@ -154,8 +171,8 @@ const handleQuantityChange = (id, newQuantity) => {
                 <span>Total cost</span>
                 <span>$ {(total).toFixed(2)}</span>
               </div>
-              <Link to='/checkout' className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 p-2 text-sm text-white uppercase w-full">Checkout</Link>
-            </div>
+              <Link to='/checkout' className="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 p-2 text-sm text-white uppercase w-full">Checkout</Link>            </div>
+            
           </div>
         </div>
       </div>
