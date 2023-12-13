@@ -4,7 +4,7 @@ import { FiAlignJustify } from "react-icons/fi";
 import Logo from '../assets/solestudio.svg'
 import { Html } from '@react-three/drei';
 
-const Navigation = () => {
+const Navigation = (isAdmin) => {
 
   function logout() {
     localStorage.removeItem('token');
@@ -38,7 +38,7 @@ const Navigation = () => {
             <li className='px-10'>
               <a href="/cart">Cart</a>
             </li>
-            {localStorage.getItem('token') ? <li className='px-10'><a href='/account'>Account</a></li>: <a></a>}
+            {localStorage.getItem('token') && (isAdmin) ? <li className='px-10'><a href='/account'>Account</a></li> : <a></a>}
           </ul>
         </div>
       </nav>

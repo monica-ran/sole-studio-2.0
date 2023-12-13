@@ -3,6 +3,8 @@ import { Route, Routes} from 'react-router-dom'
 import { Navigation, About, Account, Cart, Home, Products, Login, Signup, Footer, ProductDetails, UsersList, Add, Edit, Checkout} from './components/index.js'
 
 function App() {
+  const [ isAdmin, setIsAdmin] = useState(null);
+  console.log(isAdmin);
   return (
     <>
       <Navigation />
@@ -14,7 +16,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setIsAdmin={setIsAdmin} />} />
         <Route path="/users" element={<UsersList />} />
         <Route path="/edit_product/:productId" element={<Edit />}/>
         <Route path="/add_product" element={<Add />} />

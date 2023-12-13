@@ -26,7 +26,7 @@ export default function Account() {
             console.error("Error fetching products:", err);
         }
     }
-
+//if their an admin render the whole page if not hide the page
     async function fetchUsers() {
         let API = "http://localhost:3000/api";
 

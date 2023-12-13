@@ -4,7 +4,7 @@ import Logo from '../assets/solestudio - Copy.svg';
 import loginImage from './photos/login.png';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ( {setIsAdmin} ) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -34,13 +34,13 @@ const Login = () => {
       });
   
       const result = await response.json();
-  
+      console.log(result);
       if (response.ok) {
         // If login is successful
         if (result.token) {
           setSuccessMessage('Login successful!');
           setErrorMessage('');
-  
+          setIsAdmin(result.admin);
           // Save the token to local storage
           localStorage.setItem('token', result.token);
   
@@ -50,7 +50,7 @@ const Login = () => {
   
           // Navigate to the home page
           navigate('/');
-          window.location.reload();
+          // window.location.reload();
         } else {
           // Handle the case where a token is not present in the response
           setErrorMessage('Email or password is incorrect');
