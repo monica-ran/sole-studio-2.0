@@ -11,26 +11,25 @@ Welcome to Sole Studio, your go-to destination for buying and customizing shoes.
 # Features:
 
 Product Catalog: 
-Browse through a diverse catalog of stylish and high-quality footwear.
+-Browse through a diverse catalog of stylish and high-quality footwear.
 
 User Authentication: 
-Create an account, log in, and enjoy a personalized shopping experience.
+-Create an account, log in, and enjoy a personalized shopping experience.
 
 Shopping Cart: 
-Easily add and remove products from your cart, and proceed to checkout effortlessly.
+-Easily add and remove products from your cart, and proceed to checkout effortlessly.
 
 Customization Options: 
-Pick from our editing features and display a 3d render of your design.
+-Pick from our editing features and display a 3d render of your design.
 
 Checkout Process: 
-Securely complete your purchase with our streamlined checkout process.
+-Securely complete your purchase with our streamlined checkout process.
 
 Getting Started:
-To get started with Sole Studio, follow these steps:
+-To get started with Sole Studio, follow these steps:
 
-Clone the Repository:
+# Bash/Clone the Repository:
 
-# bash
 Clone the Repo with one of the two links below:
 git clone 
 HTTPS: https://github.com/2309-team-3/sole-studio-2.0.git
