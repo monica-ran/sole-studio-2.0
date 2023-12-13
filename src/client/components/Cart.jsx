@@ -7,6 +7,32 @@ export default function Cart() {
     const [cart, setCart] = useState();
     const navigate = useNavigate();
 
+ // Function to check login status
+ const checkLoginStatus = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // If user is not logged in, redirect to login page
+      navigate("/login");
+    } else {
+      // Fetch and set the cart if the user is logged in
+      const response = await axios.get("http://localhost:3000/api/orders/cart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setCart(response.data);
+    }
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+// useEffect to check login status when the component mounts
+useEffect(() => {
+  checkLoginStatus();
+}, [navigate]); 
+
     const headers = {
         headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
