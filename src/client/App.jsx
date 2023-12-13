@@ -7,7 +7,7 @@ function App() {
   console.log(isAdmin);
   return (
     <>
-      <Navigation />
+      <Navigation isAdmin={isAdmin}/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products/:productId" element={<ProductDetails/>} />

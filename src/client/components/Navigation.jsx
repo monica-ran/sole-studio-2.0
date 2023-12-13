@@ -4,7 +4,7 @@ import { FiAlignJustify } from "react-icons/fi";
 import Logo from '../assets/solestudio.svg'
 import { Html } from '@react-three/drei';
 
-const Navigation = (isAdmin) => {
+const Navigation = ({ isAdmin }) => {
 
   function logout() {
     localStorage.removeItem('token');
