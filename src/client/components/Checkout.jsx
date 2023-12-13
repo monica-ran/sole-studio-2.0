@@ -3,18 +3,18 @@ import React from "react";
 const Checkout = () => {
   return (
     <div>
-      <div className="relative min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="mb-20">      </div>
         {/* Notification Box */}
         <div
-          className="fixed sm:left-4 bottom-20 rounded-lg bg-white shadow-2xl w-full sm:w-1/2 xl:w-1/4 max-w-[450px] overflow-hidden"
-          x-transition:enter="transition ease-in duration-200"
-          x-transition:enter-start="opacity-0 transform -translate-x-40"
-          x-transition:enter-end="opacity-100 transform translate-x-0"
-          x-transition:leave="transition ease-in duration-200"
-          x-transition:leave-start="opacity-100 transform translate-x-0"
-          x-transition:leave-end="opacity-0 transform -translate-x-40"
-        >
+           className="relative rounded-lg bg-white shadow-2xl w-full sm:w-1/2 xl:w-1/4 max-w-[450px] overflow-hidden mb-8"
+           x-transition:enter="transition ease-in duration-200"
+           x-transition:enter-start="opacity-0 transform -translate-x-40"
+           x-transition:enter-end="opacity-100 transform translate-x-0"
+           x-transition:leave="transition ease-in duration-200"
+           x-transition:leave-start="opacity-100 transform translate-x-0"
+           x-transition:leave-end="opacity-0 transform -translate-x-40"
+         >
           {/* Notification Content */}
           <div className="relative overflow-hidden px-8 pt-8">
             <div width="80" height="77" className="absolute -top-10 -right-10 text-blue-400">
