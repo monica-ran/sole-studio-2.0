@@ -46,7 +46,7 @@ export default function Cart() {
         try {
             const response = await axios.patch(`${API}/orders/cart`, null, headers);
             setCart(response.data);
-            navigate("/checkout");
+            navigate("/Checkout");
         } catch (err) {
             console.error(err.message);
         }

@@ -11,5 +11,6 @@ import Footer from "./Footer";
 import UsersList from "./UsersList";
 import Edit from "./Edit";
 import Add from "./Add";
+import Checkout from './Checkout'
 
-export { Navigation, Home, Products, Account, About, Cart, Login, Signup, Footer, ProductDetails, UsersList, Edit, Add};
+export { Navigation, Home, Products, Account, About, Cart, Login, Signup, Footer, ProductDetails, UsersList, Edit, Add, Checkout};
