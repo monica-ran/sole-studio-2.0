@@ -83,8 +83,9 @@ useEffect(() => {
     if (!cart) return <></>;
 
     return (
-        <div className="container mx-auto mt-10">
-            <div className="w-3/4 shadow-md my-10 flex-wrap">
+        <div className="min-h-screen flex flex-col">
+        <div className="container mx-auto mt-12 pb-24">
+            <div className="w-3/4 shadow-md my-10 flex-wrap mx-auto">
                 <div className="bg-white px-10 py-1">
                     <div className="flex justify-between border-b pb-8" style={{ marginTop: "35px" }}>
                         <h1 className="font-semibold text-2xl">Shopping Cart</h1>
@@ -97,7 +98,7 @@ useEffect(() => {
                         <h3 className="font-semibold text-center text-gray-600 text-xs uppercase w-1/5">Total</h3>
                     </div>
                     {cart?.products?.map((product) => (
-                        <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5" key={product.product_id}>
+                        <div className="flex flex-col md:flex-row items-center hover:bg-gray-100 -mx-8 px-6 py-5" key={product.product_id}>
                             <div className="flex w-2/5">
                                 <div className="w-20">
                                     <img className="h-24" src={product?.image_url} alt={product?.title} />
@@ -145,17 +146,18 @@ useEffect(() => {
                     </Link>
                 </div>
 
-                <div id="summary" className="w-2/4 px-8 py-10 container flex justify-between">
+                <div id="summary" className="w-2/4 px-8 py-6 container items-center">
                     <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
-                    <div className="flex flex-wrap justify-between mt-10"></div>
-                    <div className="border-t mt-8">
-
-                        <div className="border-t mt-8">
-    <div className="flex font-semibold justify-between py-6 text-sm uppercase">
+                    <div className="flex font-semibold justify-between py-6 text-sm uppercase">
         <span>Total cost </span>
         <span>${cart.total.toFixed(2)}</span>
     </div>
+    </div>
 
+                    <div className="flex flex-wrap justify-between"></div>
+                    <div className="border-t">
+
+                        
     {/* Form for shipping information */}
     <div className="flex justify-between">
     {/* Left Form Section */}
@@ -171,7 +173,7 @@ useEffect(() => {
                 />
             </label>
 
-            <label className="relative flex-1 flex flex-col">
+            <label className="relative w-full flex flex-col">
                 <span className="font-bold mb-3">Street Address</span>
                 <input
                     className="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300"
@@ -181,7 +183,7 @@ useEffect(() => {
                 />
             </label>
 
-            <label className="relative flex-1 flex flex-col">
+            <label className="relative w-full flex flex-col">
                 <span className="font-bold mb-3">City, State, Zip</span>
                 <input
                     className="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300"
@@ -221,7 +223,7 @@ useEffect(() => {
                 </svg>
             </label>
 
-            <label className="relative flex-1 flex flex-col">
+            <label className="relative w-full flex flex-col">
                 <span className="font-bold mb-3">Expire date</span>
                 <input
                     className="rounded-md peer pl-12 pr-2 py-2 border-2 border-gray-200 placeholder-gray-300"
@@ -246,7 +248,7 @@ useEffect(() => {
                 </svg>
             </label>
 
-            <label className="relative flex-1 flex flex-col">
+            <label className="relative w-full flex flex-col">
                 <span className="font-bold flex items-center gap-3 mb-3">
                     CVC/CVV
                     <span className="relative group">
@@ -294,6 +296,7 @@ useEffect(() => {
         </form>
     </div>
 </div>
+</div>
 
     {/* Checkout button */}
     <button
@@ -302,9 +305,8 @@ useEffect(() => {
     >
         Checkout
     </button>
-</div>
                     </div>
-                </div> 
+                 
             </div>
         </div>
     );
