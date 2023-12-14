@@ -4,7 +4,7 @@ import { Navigation, About, Account, Cart, Home, Products, Login, Signup, Footer
 
 function App() {
   const [ isAdmin, setIsAdmin] = useState(null);
-  console.log(isAdmin);
+  
   return (
     <>
       <Navigation isAdmin={isAdmin}/>
